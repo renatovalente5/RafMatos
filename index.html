@@ -3,34 +3,99 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Raf Matos — Remodelações Interior e Exterior</title>
-  <meta name="description" content="Raf Matos — remodelações e construção civil em Vila Nova de Gaia. Pladur, tijoleira, pintura, telhados, canalização e eletricidade." />
+  <title>Raf Matos — Remodelações Interior e Exterior | Vila Nova de Gaia</title>
+  <meta name="description" content="Raf Matos — remodelações e construção civil em Vila Nova de Gaia. Pladur, tijoleira, pintura, telhados, canalização e eletricidade. Peça orçamento sem compromisso." />
+  <meta name="theme-color" content="#08356B" />
+  <link rel="icon" type="image/png" href="assets/img/favicon.png" />
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Raf Matos — Remodelações Interior e Exterior" />
+  <meta property="og:description" content="Construção e remodelação em Vila Nova de Gaia. Pladur, tijoleira, pintura, telhados, canalização e eletricidade." />
+  <meta property="og:image" content="assets/img/og.jpg" />
+  <meta property="og:locale" content="pt_PT" />
+  <meta name="twitter:card" content="summary_large_image" />
   <link rel="preload" as="font" type="font/woff2" href="assets/fonts/barlow-700.woff2" crossorigin />
   <link rel="preload" as="font" type="font/woff2" href="assets/fonts/inter-var.woff2" crossorigin />
   <link rel="stylesheet" href="assets/css/fonts.css" />
   <link rel="stylesheet" href="assets/css/base.css" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
 </head>
 <body>
-  <main id="conteudo">
-    <section class="section">
-      <div class="container">
-        <span class="eyebrow">Prova de design · Bloco 1</span>
-        <h1 class="section-title">Transformamos ideias em <span class="text-blue">realidade</span>.</h1>
-        <p class="section-lead">Remodelações interior e exterior — qualidade, profissionalismo e atenção aos detalhes.</p>
-        <div style="display:flex;gap:.7rem;flex-wrap:wrap;margin-top:1.6rem">
-          <a class="btn btn--primary btn--lg" href="#">Pedir orçamento</a>
-          <a class="btn btn--blue btn--lg" href="#">Azul</a>
-          <a class="btn btn--dark" href="#">Navy</a>
-          <a class="btn btn--outline" href="#">Contorno</a>
-          <a class="btn btn--wa" href="#">WhatsApp</a>
-        </div>
-        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:1.8rem">
-          <span style="width:120px;height:74px;border-radius:12px;background:var(--blue);color:#fff;display:flex;align-items:end;padding:8px;font:700 .8rem var(--font-head)">#0B57A4</span>
-          <span style="width:120px;height:74px;border-radius:12px;background:var(--navy);color:#fff;display:flex;align-items:end;padding:8px;font:700 .8rem var(--font-head)">#08356B</span>
-          <span style="width:120px;height:74px;border-radius:12px;background:var(--yellow);color:var(--ink);display:flex;align-items:end;padding:8px;font:700 .8rem var(--font-head)">#F2B50A</span>
+  <a class="skip-link" href="#conteudo">Saltar para o conteúdo</a>
+
+  <!-- ================= HEADER / NAVBAR ================= -->
+  <header id="site-header" class="site-header" data-header>
+    <div class="container nav">
+      <a class="nav__brand" href="#inicio" aria-label="Raf Matos — início">
+        <svg class="nav__mark" viewBox="0 0 64 56" fill="none" aria-hidden="true">
+          <polygon points="30,30 37,12 58,12 52,30" fill="#F2B50A"/>
+          <g stroke="currentColor" stroke-width="1.8" stroke-linecap="round" opacity=".85"><line x1="33.5" y1="21" x2="55" y2="21"/><line x1="41.7" y1="12" x2="37" y2="30"/><line x1="48.7" y1="12" x2="44" y2="30"/></g>
+          <g stroke="currentColor" stroke-width="3.4" stroke-linejoin="round" stroke-linecap="round"><path d="M24 52 V34 H50 V52"/><path d="M19 52 H57"/><path d="M16 34 L22 12 L28 34"/></g>
+        </svg>
+        <span class="nav__word"><b>RAF MATOS</b><small>Remodelações interior e exterior</small></span>
+      </a>
+      <div class="nav__spacer"></div>
+      <nav class="nav__links" aria-label="Navegação principal">
+        <a href="#inicio">Início</a>
+        <a href="#servicos">Serviços</a>
+        <a href="#antes-depois">Antes &amp; Depois</a>
+        <a href="#obras">Obras</a>
+        <a href="#sobre">Sobre</a>
+        <a href="#contacto">Contacto</a>
+      </nav>
+      <div class="nav__actions">
+        <a class="btn btn--primary btn--sm nav__cta" href="https://wa.me/351937605547?text=Ol%C3%A1%21%20Gostaria%20de%20um%20or%C3%A7amento." target="_blank" rel="noopener">Pedir orçamento</a>
+        <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" data-menu-open aria-label="Abrir menu">
+          <span class="nav__burger" aria-hidden="true"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= MENU MOBILE (ECRÃ INTEIRO) ================= -->
+  <div id="mobile-menu" class="mobile-menu" aria-hidden="true">
+    <div class="mobile-menu__inner">
+      <div class="mobile-menu__top">
+        <span class="nav__word" style="color:#fff"><b>RAF MATOS</b></span>
+        <button class="mobile-menu__close" type="button" data-menu-close aria-label="Fechar menu">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <nav class="mobile-menu__nav" aria-label="Navegação mobile">
+        <ul>
+          <li><a href="#inicio" data-menu-link><span>01</span> Início</a></li>
+          <li><a href="#servicos" data-menu-link><span>02</span> Serviços</a></li>
+          <li><a href="#antes-depois" data-menu-link><span>03</span> Antes &amp; Depois</a></li>
+          <li><a href="#obras" data-menu-link><span>04</span> Obras</a></li>
+          <li><a href="#sobre" data-menu-link><span>05</span> Sobre</a></li>
+          <li><a href="#contacto" data-menu-link><span>06</span> Contacto</a></li>
+        </ul>
+      </nav>
+      <div class="mobile-menu__footer">
+        <a class="btn btn--primary btn--lg" href="https://wa.me/351937605547?text=Ol%C3%A1%21%20Gostaria%20de%20um%20or%C3%A7amento." target="_blank" rel="noopener" data-menu-link>
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0012.04 2zm5.8 14.16c-.24.68-1.42 1.31-1.95 1.35-.5.04-.99.21-3.42-.71-2.88-1.14-4.72-4.09-4.86-4.28-.14-.19-1.17-1.56-1.17-2.97 0-1.41.74-2.11 1-2.4.26-.28.57-.35.76-.35.19 0 .38 0 .55.01.18.01.42-.07.65.5.24.58.81 2 .88 2.15.07.14.12.31.02.5-.09.19-.14.31-.28.48-.14.17-.29.37-.42.5-.14.14-.28.29-.12.57.16.28.71 1.17 1.53 1.9 1.05.94 1.94 1.23 2.22 1.37.28.14.44.12.6-.07.16-.19.69-.81.88-1.09.19-.28.37-.23.63-.14.26.09 1.65.78 1.93.92.28.14.47.21.54.33.07.11.07.66-.17 1.34z"/></svg>
+          Pedir orçamento
+        </a>
+        <div class="mobile-menu__contact">
+          <a href="tel:+351937605547">937 605 547</a>
+          <small class="call-note">(Chamada para a rede móvel nacional)</small>
+          <span>Pedro Matos · Vila Nova de Gaia</span>
         </div>
       </div>
+    </div>
+  </div>
+
+  <main id="conteudo">
+    <section id="inicio" style="min-height:90vh;display:flex;align-items:center;background:var(--grad-navy);color:#fff">
+      <div class="container"><span class="eyebrow" style="color:#fff">Bloco 3 · navbar</span><h1 style="color:#fff;max-width:16ch">Transformamos ideias em realidade.</h1><p class="section-lead" style="color:rgba(255,255,255,.85)">Placeholder para testar a navbar (logo que encolhe) e o menu mobile. Hero real a seguir.</p></div>
     </section>
+    <section id="servicos" class="section"><div class="container"><h2>Serviços</h2><p class="muted">(em construção)</p></div></section>
+    <section id="antes-depois" class="section section--soft"><div class="container"><h2>Antes &amp; Depois</h2><p class="muted">(em construção)</p></div></section>
+    <section id="obras" class="section"><div class="container"><h2>Obras</h2><p class="muted">(em construção)</p></div></section>
+    <section id="sobre" class="section section--soft"><div class="container"><h2>Sobre</h2><p class="muted">(em construção)</p></div></section>
+    <section id="contacto" class="section"><div class="container"><h2>Contacto</h2><p class="muted">(em construção)</p></div></section>
   </main>
+
+  <script src="assets/js/main.js" defer></script>
 </body>
 </html>
