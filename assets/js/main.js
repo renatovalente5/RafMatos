@@ -111,6 +111,31 @@
     });
   }
 
+  /* ---------- Slider Antes & Depois ---------- */
+  doc.querySelectorAll('.ba').forEach(function (ba) {
+    var stage = ba.querySelector('.ba__stage'), range = ba.querySelector('.ba__range');
+    if (!stage || !range) return;
+    function set(v) { stage.style.setProperty('--pos', v + '%'); }
+    range.addEventListener('input', function () { set(range.value); });
+    set(range.value || 50);
+  });
+
+  /* ---------- Galeria de obras + lightbox ---------- */
+  var ggrid = doc.getElementById('gallery-grid');
+  var lb = doc.getElementById('lightbox');
+  if (ggrid && lb) {
+    var items = Array.prototype.slice.call(ggrid.querySelectorAll('.gitem')).map(function (fig) {
+      var img = fig.querySelector('img'); var cap = fig.querySelector('figcaption');
+      return { src: img ? img.getAttribute('src') : '', alt: img ? img.alt : '', cap: cap ? cap.textContent : '' };
+    });
+    var lbImg = lb.querySelector('.lightbox__img'), lbCap = lb.querySelector('.lightbox__cap'), cur = 0;
+    function openLB(i) { cur = (i + items.length) % items.length; lbImg.src = items[cur].src; lbImg.alt = items[cur].alt; lbCap.textContent = items[cur].cap; lb.classList.add('is-open'); lb.setAttribute('aria-hidden', 'false'); doc.body.classList.add('menu-open'); }
+    function closeLB() { lb.classList.remove('is-open'); lb.setAttribute('aria-hidden', 'true'); doc.body.classList.remove('menu-open'); }
+    ggrid.addEventListener('click', function (e) { var f = e.target.closest('.gitem'); if (!f) return; openLB(items.findIndex(function (it) { return it.src === f.querySelector('img').getAttribute('src'); })); });
+    lb.addEventListener('click', function (e) { var a = e.target.getAttribute && e.target.getAttribute('data-lb'); if (a === 'close' || e.target === lb) closeLB(); else if (a === 'prev') openLB(cur - 1); else if (a === 'next') openLB(cur + 1); });
+    doc.addEventListener('keydown', function (e) { if (!lb.classList.contains('is-open')) return; if (e.key === 'Escape') closeLB(); else if (e.key === 'ArrowLeft') openLB(cur - 1); else if (e.key === 'ArrowRight') openLB(cur + 1); });
+  }
+
   /* ---------- Cookies + Google Maps (consentimento) ---------- */
   (function () {
     var KEY = 'rm-consent';
