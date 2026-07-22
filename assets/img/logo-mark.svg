@@ -1,0 +1,13 @@
+<svg viewBox="0 0 64 56" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <polygon points="30,30 37,12 58,12 52,30" fill="#F2B50A"/>
+  <g stroke="currentColor" stroke-width="1.8" stroke-linecap="round" opacity=".85">
+    <line x1="33.5" y1="21" x2="55" y2="21"/>
+    <line x1="41.7" y1="12" x2="37" y2="30"/>
+    <line x1="48.7" y1="12" x2="44" y2="30"/>
+  </g>
+  <g stroke="currentColor" stroke-width="3.4" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M24 52 V34 H50 V52"/>
+    <path d="M19 52 H57"/>
+    <path d="M16 34 L22 12 L28 34"/>
+  </g>
+</svg>
