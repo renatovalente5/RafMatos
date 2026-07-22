@@ -1,0 +1,7 @@
+# Material em bruto (fotos originais do Facebook) — não publicado
+_source/
+
+# Sistema
+.DS_Store
+Thumbs.db
+*.log

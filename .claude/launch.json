@@ -1,0 +1,6 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    { "name": "rafmatos", "runtimeExecutable": "python3", "runtimeArgs": ["_source/dev-server.py", "8100"], "port": 8100 }
+  ]
+}
