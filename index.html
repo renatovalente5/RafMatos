@@ -184,7 +184,7 @@
           <h2 class="section-title">A diferença que uma remodelação faz</h2>
           <p class="section-lead">Arraste o cursor para comparar o antes e o depois de algumas das nossas obras.</p>
         </div>
-        <div class="ba__grid">
+        <div id="ba-grid" class="ba__grid" data-collapse="2">
           <figure class="ba" data-reveal>
             <div class="ba__stage" style="--pos:50%">
               <img class="ba__img ba__before" src="assets/img/antes-depois/antes-sala-1.jpg" alt="Sala antes da remodelação" loading="lazy" />
@@ -246,6 +246,9 @@
             <figcaption class="ba__cap">Exterior com iluminação</figcaption>
           </figure>
         </div>
+        <div class="more-wrap" hidden>
+          <button class="btn btn--outline more-btn" type="button" data-more="#ba-grid">Ver mais</button>
+        </div>
       </div>
     </section>
     <!-- ================= OBRAS / TRABALHOS ================= -->
@@ -256,7 +259,7 @@
           <h2 class="section-title">Obras que falam por nós</h2>
           <p class="section-lead">Uma amostra de trabalhos realizados pela nossa equipa. Clique numa imagem para ver em detalhe.</p>
         </div>
-        <div id="gallery-grid" class="gallery" data-reveal>
+        <div id="gallery-grid" class="gallery" data-reveal data-collapse="6">
           <figure class="gitem"><img src="assets/img/obras/cozinha-branca.jpg" alt="Cozinha branca remodelada" loading="lazy" /><figcaption>Cozinha remodelada</figcaption></figure>
           <figure class="gitem"><img src="assets/img/obras/teto-pladur.jpg" alt="Teto em pladur com iluminação" loading="lazy" /><figcaption>Teto em pladur com LED</figcaption></figure>
           <figure class="gitem"><img src="assets/img/obras/tijoleira-marmore.jpg" alt="Pavimento em tijoleira tipo mármore" loading="lazy" /><figcaption>Pavimento tipo mármore</figcaption></figure>
@@ -269,6 +272,9 @@
           <figure class="gitem"><img src="assets/img/obras/estrutura-telhado.jpg" alt="Estrutura de telhado em construção" loading="lazy" /><figcaption>Estrutura de telhado</figcaption></figure>
           <figure class="gitem"><img src="assets/img/obras/obra-janela.jpg" alt="Instalação de janela" loading="lazy" /><figcaption>Vãos e janelas</figcaption></figure>
           <figure class="gitem"><img src="assets/img/obras/obra-em-curso.jpg" alt="Obra em curso" loading="lazy" /><figcaption>Obra em curso</figcaption></figure>
+        </div>
+        <div class="more-wrap" hidden>
+          <button class="btn btn--outline more-btn" type="button" data-more="#gallery-grid">Ver mais</button>
         </div>
         <div class="obras__cta" data-reveal>
           <p>Quer ver o seu espaço assim?</p>
@@ -366,14 +372,6 @@
           <img class="footer__logo" src="assets/img/logo-full.png" alt="Raf Matos — Remodelações interior e exterior" width="230" height="130" />
         </a>
         <p class="footer__tag">Construção civil e remodelações em Vila Nova de Gaia. Qualidade, profissionalismo e soluções à medida.</p>
-        <div class="footer__social">
-          <a href="https://www.facebook.com/profile.php?id=61572689883814" target="_blank" rel="noopener" aria-label="Facebook da Raf Matos">
-            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.2c-1.2 0-1.6.75-1.6 1.5V12h2.7l-.43 2.9h-2.3v7A10 10 0 0 0 22 12Z"/></svg>
-          </a>
-          <a href="https://wa.me/351937605547" target="_blank" rel="noopener" aria-label="WhatsApp da Raf Matos">
-            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0012.04 2zm5.8 14.16c-.24.68-1.42 1.31-1.95 1.35-.5.04-.99.21-3.42-.71-2.88-1.14-4.72-4.09-4.86-4.28-.14-.19-1.17-1.56-1.17-2.97 0-1.41.74-2.11 1-2.4.26-.28.57-.35.76-.35.19 0 .38 0 .55.01.18.01.42-.07.65.5.24.58.81 2 .88 2.15.07.14.12.31.02.5-.09.19-.14.31-.28.48-.14.17-.29.37-.42.5-.14.14-.28.29-.12.57.16.28.71 1.17 1.53 1.9 1.05.94 1.94 1.23 2.22 1.37.28.14.44.12.6-.07.16-.19.69-.81.88-1.09.19-.28.37-.23.63-.14.26.09 1.65.78 1.93.92.28.14.47.21.54.33.07.11.07.66-.17 1.34z"/></svg>
-          </a>
-        </div>
       </div>
 
       <nav class="footer__col" aria-label="Navegação do rodapé">
@@ -403,6 +401,14 @@
             <span>Seg. a Sáb. · 8h30 – 19h00</span>
           </li>
         </ul>
+        <div class="footer__social">
+          <a href="https://www.facebook.com/profile.php?id=61572689883814" target="_blank" rel="noopener" aria-label="Facebook da Raf Matos">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.2c-1.2 0-1.6.75-1.6 1.5V12h2.7l-.43 2.9h-2.3v7A10 10 0 0 0 22 12Z"/></svg>
+          </a>
+          <a href="https://wa.me/351937605547" target="_blank" rel="noopener" aria-label="WhatsApp da Raf Matos">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0012.04 2zm5.8 14.16c-.24.68-1.42 1.31-1.95 1.35-.5.04-.99.21-3.42-.71-2.88-1.14-4.72-4.09-4.86-4.28-.14-.19-1.17-1.56-1.17-2.97 0-1.41.74-2.11 1-2.4.26-.28.57-.35.76-.35.19 0 .38 0 .55.01.18.01.42-.07.65.5.24.58.81 2 .88 2.15.07.14.12.31.02.5-.09.19-.14.31-.28.48-.14.17-.29.37-.42.5-.14.14-.28.29-.12.57.16.28.71 1.17 1.53 1.9 1.05.94 1.94 1.23 2.22 1.37.28.14.44.12.6-.07.16-.19.69-.81.88-1.09.19-.28.37-.23.63-.14.26.09 1.65.78 1.93.92.28.14.47.21.54.33.07.11.07.66-.17 1.34z"/></svg>
+          </a>
+        </div>
       </div>
     </div>
 

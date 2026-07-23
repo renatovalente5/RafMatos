@@ -155,6 +155,10 @@ body.menu-open{overflow:hidden}
 .obras__cta{margin-top:2.4rem;display:flex;flex-direction:column;align-items:center;gap:.9rem;text-align:center}
 .obras__cta p{font-family:var(--font-head);font-weight:600;font-size:1.15rem;color:var(--ink)}
 
+/* ---------------- VER MAIS (mobile) ---------------- */
+.more-wrap{margin-top:1.5rem;display:flex;justify-content:center}
+.more-btn{min-width:210px}
+
 /* ---------------- CONTACTO ---------------- */
 .contact__grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(1.6rem,4vw,2.6rem);align-items:stretch;margin-top:.5rem}
 .contact__card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:clamp(1.6rem,3vw,2.4rem);box-shadow:var(--shadow-sm);display:flex;flex-direction:column}
@@ -162,8 +166,8 @@ body.menu-open{overflow:hidden}
 .contact__card .contact__intro{color:var(--muted);font-size:.96rem;margin-bottom:1.6rem}
 .contact__list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;justify-content:center;gap:1.3rem;flex:1}
 .contact__list li{display:flex;gap:.9rem;align-items:center}
-.contact__ic{flex:none;width:48px;height:48px;border-radius:12px;background:var(--grad-blue);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-sm)}
-.contact__ic svg{width:22px;height:22px}
+.contact__ic{flex:none;width:46px;height:46px;border-radius:50%;background:var(--blue-050);color:var(--blue);display:flex;align-items:center;justify-content:center;border:1px solid #D8E5F6}
+.contact__ic svg{width:21px;height:21px}
 .contact__list small{color:var(--muted);display:block;font-size:.76rem;text-transform:uppercase;letter-spacing:.05em;font-weight:600}
 .contact__list a{color:var(--ink);font-family:var(--font-head);font-weight:700;display:block;font-size:1.05rem}
 .contact__list a:hover{color:var(--blue)}

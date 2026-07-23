@@ -136,6 +136,43 @@
     doc.addEventListener('keydown', function (e) { if (!lb.classList.contains('is-open')) return; if (e.key === 'Escape') closeLB(); else if (e.key === 'ArrowLeft') openLB(cur - 1); else if (e.key === 'ArrowRight') openLB(cur + 1); });
   }
 
+  /* ---------- "Ver mais" (encurtar secções no telemóvel) ---------- */
+  (function () {
+    var mq = window.matchMedia('(max-width:600px)');
+    function apply() {
+      doc.querySelectorAll('[data-collapse]').forEach(function (grid) {
+        var max = parseInt(grid.getAttribute('data-collapse'), 10) || 4;
+        var wrap = grid.parentNode.querySelector('.more-wrap');
+        var btn = wrap ? wrap.querySelector('[data-more]') : null;
+        var items = Array.prototype.slice.call(grid.children);
+        var expanded = grid.classList.contains('is-expanded');
+        if (mq.matches && items.length > max) {
+          if (wrap) wrap.hidden = false;
+          items.forEach(function (el, i) {
+            var show = expanded || i < max;
+            el.style.display = show ? '' : 'none';
+            if (show) el.classList.add('is-in');
+          });
+          if (btn) btn.textContent = expanded ? 'Ver menos' : 'Ver mais';
+        } else {
+          if (wrap) wrap.hidden = true;
+          items.forEach(function (el) { el.style.display = ''; });
+        }
+      });
+    }
+    doc.querySelectorAll('[data-more]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var grid = doc.querySelector(btn.getAttribute('data-more'));
+        if (!grid) return;
+        grid.classList.toggle('is-expanded');
+        apply();
+      });
+    });
+    apply();
+    (mq.addEventListener ? mq.addEventListener.bind(mq, 'change') : mq.addListener.bind(mq))(apply);
+    var rt; window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(apply, 150); }, { passive: true });
+  })();
+
   /* ---------- Cookies + Google Maps (consentimento) ---------- */
   (function () {
     var KEY = 'rm-consent';
