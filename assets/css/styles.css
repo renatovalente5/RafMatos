@@ -17,7 +17,7 @@
 .nav__brand{display:inline-flex;align-items:center;gap:.6rem;flex:none}
 .nav__mark{height:48px;width:auto;transition:height var(--t)}
 .nav__word{display:flex;flex-direction:column;line-height:1;gap:.32rem;transition:transform var(--t)}
-.nav__word-img{height:26px;width:auto;transition:height var(--t)}
+.nav__word-img{height:26px;width:auto;align-self:flex-start;transition:height var(--t)}
 .nav__word small{font-family:var(--font-head);font-weight:600;font-size:.6rem;letter-spacing:.135em;text-transform:uppercase;color:#F6D77A}
 .site-header.is-scrolled .nav__mark{height:40px}
 .site-header.is-scrolled .nav__word-img{height:22px}
