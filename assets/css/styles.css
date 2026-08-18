@@ -69,24 +69,104 @@ body.menu-open{overflow:hidden}
 @media (max-width:420px){ .nav__word small{display:none} }
 
 /* ---------------- HERO ---------------- */
-.hero{position:relative;padding-top:calc(var(--header-h) + 1.6rem);padding-bottom:clamp(2.4rem,5vw,4rem);background:var(--bg-soft);overflow:hidden}
-.hero__grid{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(2rem,5vw,3.5rem);align-items:center}
-.hero__title{font-size:clamp(2.3rem,5.2vw,3.9rem);line-height:1.04;margin-top:.6rem}
-.hero__title .hl{color:var(--blue)}
-.hero__lead{margin-top:1.1rem;font-size:var(--fs-lead);color:var(--muted);max-width:38rem}
-.hero__lead strong{color:var(--ink)}
-.hero__cta{display:flex;flex-wrap:wrap;gap:.8rem;margin-top:1.7rem}
-.hero__trust{display:flex;flex-wrap:wrap;gap:1rem 1.5rem;margin-top:1.9rem;padding-top:1.5rem;border-top:1px solid var(--line-2)}
-.hero__trust li{display:flex;align-items:center;gap:.5rem;font-family:var(--font-head);font-weight:600;color:var(--ink);font-size:.98rem}
-.hero__trust svg{width:22px;height:22px;color:var(--blue);flex:none}
-.hero__media{position:relative}
-.hero__photo{border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow);aspect-ratio:4/5;border:1px solid var(--line)}
-.hero__photo img{width:100%;height:100%;object-fit:cover}
-.hero__badge{position:absolute;left:-12px;bottom:26px;background:var(--yellow);color:var(--ink);font-family:var(--font-head);font-weight:700;font-size:.98rem;padding:.7em 1.1em;border-radius:10px;box-shadow:var(--shadow-sm)}
-@media (max-width:860px){
-  .hero__grid{grid-template-columns:1fr;gap:2rem}
-  .hero__media{order:-1;max-width:400px;margin-inline:auto;width:100%}
+/* Composição editorial: coluna de texto medida à esquerda, fotografia a sangrar
+   para o bordo direito do ecrã. A régua amarela de 3px que abre a coluna é a
+   mesma que abre a lista de serviços, e o filete de 1px que a fecha é o mesmo
+   que fecha a lista — o hero e a secção seguinte usam a mesma gramática.
+   --bleed = distância do bordo interior do .container ao bordo do ecrã. */
+.hero{
+  --bleed:calc(max(0px,(100vw - var(--maxw)) / 2) + var(--gutter));
+  position:relative;padding-top:calc(var(--header-h) + 1.6rem);
+  padding-bottom:clamp(2.4rem,5vw,4rem);
+  /* Desvanece para branco no último terço: sem isto a faixa --bg-soft corta a
+     página a direito mesmo antes da lista de serviços, que é branca. */
+  background:linear-gradient(180deg,var(--bg-soft) 0%,var(--bg-soft) 56%,var(--white) 100%);
+  overflow:hidden;
 }
+/* align-items:start e NÃO stretch: a coluna tem a altura do seu conteúdo. A
+   versão anterior esticava-a e empurrava o filete de baixo com margin-bottom:auto
+   para perseguir um alinhamento com o rodapé da fotografia que, medido, não
+   existia (609 contra 635) — e pagava 115px de vazio a meio da coluna por ele.
+   O que alinha, e alinha mesmo, é o topo: régua amarela e topo da fotografia. */
+.hero__grid{display:grid;grid-template-columns:minmax(0,1.04fr) minmax(0,.96fr);gap:clamp(1.8rem,4.4vw,4rem);align-items:start}
+.hero__copy{max-width:33rem;border-top:3px solid var(--yellow);padding-top:clamp(.9rem,1.6vw,1.3rem)}
+.hero .eyebrow::before{display:none} /* a régua já dá o traço amarelo */
+.hero__title{font-size:clamp(2.05rem,1.15rem + 2.9vw,3.15rem);line-height:1.06;margin-top:.5rem;text-wrap:balance;overflow-wrap:break-word}
+.hero__title .hl{color:var(--blue)}
+/* --muted (#6C7789) dava 4,18:1 sobre --bg-soft e chumbava o AA do texto normal. */
+.hero__lead{margin-top:1rem;font-size:var(--fs-lead);color:var(--body);max-width:32rem}
+.hero__lead strong{color:var(--ink)}
+.hero__cta{display:flex;flex-wrap:wrap;align-items:center;gap:.7rem 1.4rem;margin-top:1.5rem}
+.hero__link{display:inline-flex;align-items:center;gap:.45em;min-height:48px;padding-inline:2px;
+  font-family:var(--font-head);font-weight:600;font-size:1.02rem;color:var(--ink);
+  text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:.42em;text-decoration-color:var(--yellow);
+  transition:color var(--t-fast),text-decoration-color var(--t-fast)}
+.hero__link svg{width:1.05em;height:1.05em;flex:none;transition:transform var(--t)}
+.hero__link:hover{color:var(--blue);text-decoration-color:var(--blue)}
+.hero__link:hover svg{transform:translateX(3px)}
+/* Quem remodela a casa muitas vezes quer ouvir uma voz: o número fica à mão na
+   primeira dobra, com o custo da chamada ao lado, como no resto do site. */
+.hero__tel{display:flex;flex-wrap:wrap;align-items:center;gap:0 .65rem;margin-top:.7rem}
+.hero__tel a{display:inline-flex;align-items:center;gap:.5em;min-height:46px;padding-inline:2px;
+  font-family:var(--font-head);font-weight:700;font-size:1.1rem;color:var(--ink);transition:color var(--t-fast)}
+.hero__tel a:hover{color:var(--blue)}
+.hero__tel svg{width:1.05em;height:1.05em;flex:none;color:var(--blue)}
+/* O .call-note global vive a opacity .72; sobre --bg-soft isso deixaria o texto
+   de 12,5px em 4,3:1. Fixo a cor e devolvo a opacidade a 1. */
+.hero__tel .call-note{opacity:1;color:var(--body)}
+/* Fecha a coluna com um filete de 1px, como a lista de serviços fecha em baixo. */
+.hero__trust{display:flex;flex-wrap:wrap;gap:.4rem 1.4rem;margin-top:clamp(1rem,2vw,1.5rem);
+  padding-top:clamp(.9rem,1.6vw,1.2rem);border-top:1px solid var(--line-2)}
+.hero__trust li{display:flex;align-items:center;gap:.5rem;font-family:var(--font-head);font-weight:600;font-size:.93rem;color:var(--ink)}
+.hero__trust li::before{content:"";width:6px;height:6px;flex:none;border-radius:2px;background:var(--yellow)}
+
+/* align-self:stretch com a grelha em align-items:start: a linha da grelha é
+   medida pela coluna de texto (a fotografia não tem altura própria — a imagem é
+   absoluta), portanto a fotografia fica EXACTAMENTE com a altura da coluna, em
+   qualquer largura. É assim que o topo e o rodapé alinham sem números mágicos:
+   régua amarela = topo da foto, fim da lista = rodapé da foto. O tecto de 100vh
+   existe só para o zoom de texto a 200%, onde a coluna passa de 1200px e a
+   fotografia ficaria absurda; em janelas normais nunca chega a actuar. */
+.hero__media{display:flex;align-self:stretch;max-height:100vh;margin-right:calc(-1 * var(--bleed))}
+.hero__photo{position:relative;flex:1;min-width:0;min-height:20rem;overflow:hidden;
+  background:var(--bg-mut);border-radius:var(--radius-lg) 0 0 var(--radius-lg)}
+/* Absoluta de propósito: com height:100% numa caixa de altura indefinida a
+   imagem caía para a altura intrínseca (862px) e esticava o hero para 1017px.
+   O object-position está afinado a ESTA fotografia; se se trocar a imagem do
+   hero, há que voltar a ver o recorte nas duas larguras. */
+.hero__photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 56%}
+
+/* Telemóvel/tablet: texto primeiro, fotografia a seguir, de bordo a bordo e sem
+   etiqueta pousada em cima. O padding-top passa a medir-se pelo cabeçalho real
+   (73px), não pelos 92px do token, que deixavam 45px de vazio. */
+@media (max-width:880px){
+  .hero{padding-top:calc(var(--header-h-min) + 1.6rem);padding-bottom:0}
+  /* minmax(0,1fr) e não 1fr: com o texto do sistema a 200% a palavra
+     «Remodelações» mede 422px e um track 1fr cresce até ela, empurrando a
+     fotografia 52px para fora do ecrã. */
+  .hero__grid{grid-template-columns:minmax(0,1fr);gap:clamp(1.3rem,4vw,2rem)}
+  .hero__copy{max-width:34rem}
+  /* max-height:none: o tecto em vh é do desenho de duas colunas; aqui, com a
+     foto de bordo a bordo, cortava-a em paisagem (390 de caixa para 475 de foto). */
+  .hero__media{display:block;max-height:none;margin-inline:calc(-1 * var(--bleed))}
+  .hero__photo{aspect-ratio:3/2;min-height:0;border-radius:0}
+}
+/* No tablet a foto de 3/2 daria 512px de altura e o hero enchia o ecrã inteiro
+   sem deixar ver que há mais página por baixo. */
+@media (min-width:600px) and (max-width:880px){ .hero__photo{aspect-ratio:16/9} }
+/* Abaixo dos 360px a curva do título fica mais contida. Medido: a 320px o
+   título fica em 3 linhas nos dois casos — com Barlow e com a fonte de recurso —
+   portanto isto não evita nenhuma quebra hoje; compra 5,1px e a folga para o dia
+   em que o H1 crescer, que é o pedido de quem viu a versão anterior ficar a 6px
+   da dobra nessa largura. */
+@media (max-width:359px){ .hero__title{font-size:1.95rem} }
+/* Ecrã baixo (telemóvel deitado, janela curta): sem isto, a 844x390 o botão
+   principal fechava aos 388,3 de 390 — cumpria por 1,7px, o que não é cumprir. */
+@media (max-height:520px){
+  .hero{padding-top:calc(var(--header-h-min) + .9rem)}
+  .hero__cta{margin-top:1.1rem}
+}
+@media (prefers-reduced-motion:reduce){.hero__link svg{transition:none}}
 
 /* ---------------- SERVIÇOS (lista) ---------------- */
 /* É a primeira secção depois do hero: respira menos que as vizinhas, de propósito. */
