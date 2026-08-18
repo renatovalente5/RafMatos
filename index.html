@@ -48,7 +48,7 @@
   <link rel="preload" as="font" type="font/woff2" href="assets/fonts/inter-var.woff2" crossorigin />
   <link rel="stylesheet" href="assets/css/fonts.css?v=be308d42" />
   <link rel="stylesheet" href="assets/css/base.css?v=c4ff5a0f" />
-  <link rel="stylesheet" href="assets/css/styles.css?v=bbd5b00d" />
+  <link rel="stylesheet" href="assets/css/styles.css?v=b1fbb19e" />
 </head>
 <body>
   <a class="skip-link" href="#conteudo">Saltar para o conteúdo</a>
@@ -115,32 +115,40 @@
   <main id="conteudo">
     <!-- ================= HERO ================= -->
     <section id="inicio" class="hero">
-      <div class="container hero__grid">
+      <!-- A fotografia é o topo inteiro. Fica em <img> e não em background-image
+           do CSS para o pré-varrimento do parser a encontrar antes de haver
+           folha de estilos: é o LCP da página, daí o fetchpriority e a ausência
+           de loading="lazy". -->
+      <picture>
+        <!-- A interior-ripado tem 722px de largura: no telemovel (390) fica
+             a 0,54x, nitida. No computador seria esticada 1,99x e nota-se — e
+             nao ha original melhor (o de origem tem 736px, +2%). A cozinha e
+             panoramica de 1600px: a 1440 REDUZ para 0,90x. O contraste ja nao
+             depende da imagem, porque a sombra vive no bloco de texto, por
+             isso a fotografia pode ser escolhida pela nitidez e pelo assunto. -->
+        <source media="(min-width:881px)" srcset="assets/img/obras/cozinha-branca.jpg" />
+      <img class="hero__bg" src="assets/img/obras/interior-ripado.jpg"
+           alt="Interior remodelado pela Raf Matos em Vila Nova de Gaia: pavimento novo, divisória em ripado de madeira junto à escada e cozinha branca ao fundo."
+           width="722" height="1600" fetchpriority="high" />
+      </picture>
+      <div class="container hero__inner">
         <div class="hero__copy" data-reveal>
-          <span class="eyebrow">Interior e exterior</span>
           <h1 class="hero__title">Remodelações e construção em <span class="hl">Vila Nova de Gaia</span>.</h1>
-          <p class="hero__lead">Do pladur ao telhado, <strong>tratamos de tudo</strong>. Entregamos a obra pronta a estrear.</p>
-          <div class="hero__cta">
+          <div class="hero__actions">
             <a class="btn btn--primary btn--lg" href="https://wa.me/351937605547?text=Ol%C3%A1%21%20Gostaria%20de%20um%20or%C3%A7amento." target="_blank" rel="noopener">
               <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0012.04 2zm5.8 14.16c-.24.68-1.42 1.31-1.95 1.35-.5.04-.99.21-3.42-.71-2.88-1.14-4.72-4.09-4.86-4.28-.14-.19-1.17-1.56-1.17-2.97 0-1.41.74-2.11 1-2.4.26-.28.57-.35.76-.35.19 0 .38 0 .55.01.18.01.42-.07.65.5.24.58.81 2 .88 2.15.07.14.12.31.02.5-.09.19-.14.31-.28.48-.14.17-.29.37-.42.5-.14.14-.28.29-.12.57.16.28.71 1.17 1.53 1.9 1.05.94 1.94 1.23 2.22 1.37.28.14.44.12.6-.07.16-.19.69-.81.88-1.09.19-.28.37-.23.63-.14.26.09 1.65.78 1.93.92.28.14.47.21.54.33.07.11.07.66-.17 1.34z"/></svg>
               Pedir orçamento
             </a>
-            <a class="hero__link" href="#obras">Ver obras<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h13M11.5 5.5 18 12l-6.5 6.5"/></svg></a>
+            <!-- O número só aparece no computador, e a razão está medida no CSS:
+                 no telemóvel o cabeçalho abre um menu que já o mostra a um toque
+                 e a primeira dobra está encostada ao banner de cookies; no
+                 computador o cabeçalho não mostra número nenhum e quem quer
+                 ligar não teria para onde olhar antes da secção Contacto. -->
+            <a class="hero__tel" href="tel:+351937605547">
+              <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 3.5h-3A1.5 1.5 0 0 0 3 5.2C3 13.4 10.6 21 18.8 21a1.5 1.5 0 0 0 1.7-1.5v-3l-4-1.5-2 2a13.5 13.5 0 0 1-6.5-6.5l2-2z"/></svg>937 605 547
+            </a>
           </div>
-          <p class="hero__tel">
-            <a href="tel:+351937605547"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 3.5h-3A1.5 1.5 0 0 0 3 5.2C3 13.4 10.6 21 18.8 21a1.5 1.5 0 0 0 1.7-1.5v-3l-4-1.5-2 2a13.5 13.5 0 0 1-6.5-6.5l2-2z"/></svg>937 605 547</a>
-            <small class="call-note">(Chamada para a rede móvel nacional)</small>
-          </p>
-          <ul class="hero__trust">
-            <li>Equipa própria</li>
-            <li>Gaia e concelhos limítrofes</li>
-            <li>Orçamento sem compromisso</li>
-          </ul>
-        </div>
-        <div class="hero__media" data-reveal>
-          <div class="hero__photo">
-            <img src="assets/img/obras/escada-led.jpg" alt="Escada interior em madeira clara, com fita LED embutida na parede a acompanhar os degraus — remodelação da Raf Matos" width="900" height="1125" fetchpriority="high" />
-          </div>
+          <small class="call-note hero__note">(Chamada para a rede móvel nacional)</small>
         </div>
       </div>
     </section>
@@ -278,16 +286,16 @@
           <figure class="gitem"><img src="assets/img/obras/wc-moderno.jpg" alt="Casa de banho moderna" loading="lazy" style="--pos:50% 65%" /><figcaption>Casa de banho moderna</figcaption></figure>
           <figure class="gitem"><img src="assets/img/obras/escada-led.jpg" alt="Escada com iluminação LED" loading="lazy" style="--pos:40% 50%" /><figcaption>Escada com LED</figcaption></figure>
           <figure class="gitem"><img src="assets/img/obras/cozinha-branca.jpg" alt="Cozinha branca remodelada" loading="lazy" style="--pos:24% 50%" /><figcaption>Cozinha remodelada</figcaption></figure>
-          <figure class="gitem"><img src="assets/img/obras/interior-ripado.jpg" alt="Parede com ripado decorativo" loading="lazy" style="--pos:50% 22%" /><figcaption>Parede ripada decorativa</figcaption></figure>
+          <figure class="gitem"><img src="assets/img/obras/pladur-corredor.jpg" alt="Corredor com teto de pladur" loading="lazy" style="--pos:50% 28%" /><figcaption>Corredor em pladur</figcaption></figure>
           <figure class="gitem"><img src="assets/img/obras/telha-nova.jpg" alt="Telhado com telha nova" loading="lazy" style="--pos:50% 45%" /><figcaption>Telhado renovado</figcaption></figure>
           <figure class="gitem"><img src="assets/img/obras/corredor-portas.jpg" alt="Corredor com portas novas" loading="lazy" style="--pos:50% 78%" /><figcaption>Corredor e portas</figcaption></figure>
           <figure class="gitem"><img src="assets/img/obras/teto-pladur.jpg" alt="Teto em pladur com iluminação" loading="lazy" style="--pos:20% 50%" /><figcaption>Teto em pladur com LED</figcaption></figure>
           <figure class="gitem"><img src="assets/img/obras/tijoleira-marmore.jpg" alt="Pavimento em tijoleira tipo mármore" loading="lazy" style="--pos:50% 100%" /><figcaption>Revestimento tipo mármore</figcaption></figure>
-          <figure class="gitem"><img src="assets/img/obras/pladur-corredor.jpg" alt="Corredor com teto de pladur" loading="lazy" style="--pos:50% 28%" /><figcaption>Corredor em pladur</figcaption></figure>
           <figure class="gitem"><img src="assets/img/obras/obra-janela.jpg" alt="Instalação de janela" loading="lazy" style="--pos:38% 50%" /><figcaption>Vãos e janelas</figcaption></figure>
           <figure class="gitem"><img src="assets/img/obras/estrutura-telhado.jpg" alt="Estrutura de telhado em construção" loading="lazy" style="--pos:15% 50%" /><figcaption>Estrutura de telhado</figcaption></figure>
           <figure class="gitem"><img src="assets/img/obras/obra-em-curso.jpg" alt="Obra em curso" loading="lazy" style="--pos:50% 22%" /><figcaption>Obra em curso</figcaption></figure>
-        </div>
+          <figure class="gitem"><img src="assets/img/obras/interior-ripado.jpg" alt="Parede com ripado decorativo" loading="lazy" style="--pos:50% 22%" /><figcaption>Parede ripada decorativa</figcaption></figure>
+</div>
         <div class="more-wrap" hidden>
           <button class="btn btn--outline more-btn" type="button" data-more="#gallery-grid">Ver mais</button>
         </div>
