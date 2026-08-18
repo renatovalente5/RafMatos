@@ -5,3 +5,7 @@ _source/
 .DS_Store
 Thumbs.db
 *.log
+
+# Ferramentas locais de desenvolvimento — o Pages serve a arvore toda
+# (ha .nojekyll), por isso tudo o que ficar versionado fica publico.
+.claude/

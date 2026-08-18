@@ -163,8 +163,7 @@ body.menu-open{overflow:hidden}
 /* ---------------- CONTACTO ---------------- */
 .contact__grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(1.6rem,4vw,2.6rem);align-items:stretch;margin-top:.5rem}
 .contact__card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:clamp(1.6rem,3vw,2.4rem);box-shadow:var(--shadow-sm);display:flex;flex-direction:column}
-.contact__card h3{font-size:1.35rem;margin-bottom:.4rem}
-.contact__card .contact__intro{color:var(--muted);font-size:.96rem;margin-bottom:1.6rem}
+.contact__card h3{font-size:1.35rem;margin-bottom:1.4rem}
 .contact__list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;justify-content:center;gap:1.3rem;flex:1}
 .contact__list li{display:flex;gap:.9rem;align-items:center}
 .contact__ic{flex:none;width:46px;height:46px;border-radius:50%;background:var(--blue-050);color:var(--blue);display:flex;align-items:center;justify-content:center;border:1px solid #D8E5F6}

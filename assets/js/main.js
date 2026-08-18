@@ -189,6 +189,12 @@
       f.style.cssText = 'width:100%;height:100%;border:0;display:block';
       mapBox.innerHTML = ''; mapBox.appendChild(f);
     }
+    /* Guardado ANTES de o iframe entrar: e a fachada a que voltamos se o
+       visitante mudar de ideias. Sem isto, retirar o consentimento so tinha
+       efeito no proximo carregamento — e o mapa continuava a falar com a
+       Google entretanto. */
+    var fachada = mapBox ? mapBox.innerHTML : '';
+    function unloadMap() { if (mapBox && mapBox.querySelector('iframe')) mapBox.innerHTML = fachada; }
     function show() { if (banner) banner.hidden = false; }
     function hide() { if (banner) banner.hidden = true; }
     var cur = get();
@@ -197,11 +203,22 @@
     if (banner) banner.addEventListener('click', function (e) {
       var b = e.target.closest('[data-consent]'); if (!b) return;
       var v = b.getAttribute('data-consent'); set(v); hide();
-      if (v === 'accepted') loadMap();
+      if (v === 'accepted') loadMap(); else unloadMap();
     });
-    var mapBtn = mapBox && mapBox.querySelector('[data-map-load]');
-    if (mapBtn) mapBtn.addEventListener('click', function () { if (get() === 'accepted') loadMap(); else show(); });
+    /* Delegado no contentor, e nao ligado ao botao: o innerHTML do mapBox e
+       substituido nos dois sentidos e um listener preso ao botao morria ai. */
+    if (mapBox) mapBox.addEventListener('click', function (e) {
+      if (!e.target.closest('[data-map-load]')) return;
+      if (get() === 'accepted') loadMap(); else show();
+    });
+    /* RGPD art. 7.º/3: retirar o consentimento tem de ser tao facil como
+       da-lo. O link do rodape reabre o banner; as paginas legais nao tem
+       banner, por isso mandam para a inicial com ?cookies=1. */
     doc.querySelectorAll('[data-cookie-manage]').forEach(function (el) { el.addEventListener('click', function (e) { e.preventDefault(); show(); }); });
+    if (banner && /[?&]cookies=1(&|$)/.test(location.search)) {
+      show();
+      if (history.replaceState) history.replaceState(null, '', location.pathname + location.hash);
+    }
   })();
 
   /* ---------- Ano no footer ---------- */
