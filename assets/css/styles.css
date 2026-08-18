@@ -189,13 +189,31 @@ body.menu-open{overflow:hidden}
 .contact__list .call-note{font-family:var(--font-body);font-weight:400;text-transform:none;letter-spacing:0;opacity:.72}
 .contact__actions{display:flex;gap:.7rem;flex-wrap:wrap;margin-top:1.5rem}
 .contact__actions .btn{flex:1}
-.contact__map{border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-sm);aspect-ratio:1/1;border:1px solid var(--line)}
-.map-box{width:100%;height:100%}
+.contact__map{position:relative;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-sm);aspect-ratio:1/1;border:1px solid var(--line)}
+/* inset:0 em vez de height:100%: a altura da caixa vem do aspect-ratio e
+   uma percentagem contra uma altura assim nem sempre resolve — quando nao
+   resolve, o iframe cai para os 150px de origem e sobra branco dentro da
+   propria caixa. Absoluto preenche sempre, nos dois estados. */
+.map-box{position:absolute;inset:0}
 .contact__map iframe{width:100%;height:100%;display:block;border:0}
 .map-facade{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.6rem;text-align:center;padding:1.6rem;color:var(--ink);background:radial-gradient(circle at 30% 20%,#eef3f9,#e2e9f2)}
 .map-facade svg{width:46px;height:46px;color:var(--blue)}
 .map-facade p{font-size:.88rem;color:var(--muted);max-width:34ch}
-@media (max-width:820px){.contact__grid{grid-template-columns:1fr}.contact__map{aspect-ratio:4/3}}
+/* O 4/3 deitado num ecra vertical dava uma caixa de 355x266 e o Google
+   cortava as etiquetas nas margens (lia-se «Mini Merca...»); a rua da
+   morada nem chegava a ser desenhada. Em pe, a mesma largura da 355 rende
+   473px de altura e cabe «R. 5 de Outubro» inteira a volta do marcador. */
+@media (max-width:820px){.contact__grid{grid-template-columns:1fr}.contact__map{aspect-ratio:3/4}
+  /* O «vazio» por baixo do mapa nao era anomalia nenhuma: era o
+     padding-block do .section (51,2px aos 390px). So que o cartao do mapa
+     fica a 17,6px das margens laterais e a 51,2px do rodape — quase o
+     triplo — e a assimetria le-se como buraco. Metade da cadencia da
+     seccao chega: o rodape ja traz 44,8px de escuro por cima do logotipo. */
+  #contacto{padding-bottom:clamp(1.6rem,3.5vw,3rem)}}
+/* Telemovel ao alto mas ecra deitado (667x375 e afins): a caixa em pe
+   passava dos 900px de altura num ecra de 375. Ai a proporcao segue a do
+   ecra. */
+@media (max-width:820px) and (orientation:landscape){.contact__map{aspect-ratio:3/2}}
 
 /* ---------------- FOOTER ---------------- */
 .footer{position:relative;background:var(--grad-navy);color:#B9C7DA;padding-top:clamp(2.8rem,5vw,4.2rem)}
