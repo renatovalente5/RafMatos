@@ -118,6 +118,43 @@
     function set(v) { stage.style.setProperty('--pos', v + '%'); }
     range.addEventListener('input', function () { set(range.value); });
     set(range.value || 50);
+
+    /* No telemovel o input cobria a fotografia inteira, e um input[type=range]
+       salta para o x do dedo logo no toque. Resultado: qualquer toque na foto —
+       incluindo o inicio de um deslize para percorrer a pagina — atirava o
+       comparador para outro sitio. Em ecras tacteis o CSS tira os eventos ao
+       input e o arrasto passa a ser nosso, e so comeca depois de o gesto se
+       revelar horizontal. O input fica no DOM para o teclado e para as
+       tecnologias de apoio. */
+    if (!(window.matchMedia && window.matchMedia('(pointer:coarse)').matches)) return;
+    var x0 = 0, y0 = 0, activo = false, id = null;
+    function pos(e) {
+      var r = stage.getBoundingClientRect();
+      var v = Math.max(0, Math.min(100, ((e.clientX - r.left) / r.width) * 100));
+      range.value = v; set(v);
+    }
+    stage.addEventListener('pointerdown', function (e) {
+      if (!e.isPrimary) return;
+      x0 = e.clientX; y0 = e.clientY; activo = false; id = e.pointerId;
+    });
+    stage.addEventListener('pointermove', function (e) {
+      if (e.pointerId !== id) return;
+      if (!activo) {
+        var dx = Math.abs(e.clientX - x0), dy = Math.abs(e.clientY - y0);
+        if (dx < 8 || dx <= dy) return;   /* ainda pode ser scroll: nao tocamos */
+        activo = true;
+        try { stage.setPointerCapture(id); } catch (err) {}
+      }
+      e.preventDefault();
+      pos(e);
+    });
+    ['pointerup', 'pointercancel'].forEach(function (t) {
+      stage.addEventListener(t, function (e) {
+        if (e.pointerId !== id) return;
+        try { if (stage.hasPointerCapture(id)) stage.releasePointerCapture(id); } catch (err) {}
+        activo = false; id = null;
+      });
+    });
   });
 
   /* ---------- Galeria de obras + lightbox ---------- */
@@ -132,7 +169,16 @@
     function openLB(i) { cur = (i + items.length) % items.length; lbImg.src = items[cur].src; lbImg.alt = items[cur].alt; lbCap.textContent = items[cur].cap; lb.classList.add('is-open'); lb.setAttribute('aria-hidden', 'false'); doc.body.classList.add('menu-open'); }
     function closeLB() { lb.classList.remove('is-open'); lb.setAttribute('aria-hidden', 'true'); doc.body.classList.remove('menu-open'); }
     ggrid.addEventListener('click', function (e) { var f = e.target.closest('.gitem'); if (!f) return; openLB(items.findIndex(function (it) { return it.src === f.querySelector('img').getAttribute('src'); })); });
-    lb.addEventListener('click', function (e) { var a = e.target.getAttribute && e.target.getAttribute('data-lb'); if (a === 'close' || e.target === lb) closeLB(); else if (a === 'prev') openLB(cur - 1); else if (a === 'next') openLB(cur + 1); });
+    /* closest() e nao getAttribute() no alvo: o toque cai sempre no <svg> ou no
+       <path> de 24px dentro do botao de 52px, e nenhum deles tem data-lb — os
+       tres controlos estavam inertes em qualquer largura. */
+    lb.addEventListener('click', function (e) {
+      var t = e.target.closest ? e.target.closest('[data-lb]') : null;
+      var a = t ? t.getAttribute('data-lb') : null;
+      if (a === 'close' || e.target === lb) closeLB();
+      else if (a === 'prev') openLB(cur - 1);
+      else if (a === 'next') openLB(cur + 1);
+    });
     doc.addEventListener('keydown', function (e) { if (!lb.classList.contains('is-open')) return; if (e.key === 'Escape') closeLB(); else if (e.key === 'ArrowLeft') openLB(cur - 1); else if (e.key === 'ArrowRight') openLB(cur + 1); });
   }
 
@@ -195,8 +241,24 @@
        Google entretanto. */
     var fachada = mapBox ? mapBox.innerHTML : '';
     function unloadMap() { if (mapBox && mapBox.querySelector('iframe')) mapBox.innerHTML = fachada; }
-    function show() { if (banner) banner.hidden = false; }
-    function hide() { if (banner) banner.hidden = true; }
+    /* Enquanto o banner ocupa o fundo do ecra, assenta em cima da barra legal do
+       rodape — identificacao da empresa e Livro de Reclamacoes. Damos ao rodape
+       exactamente a altura do banner (medida, nao adivinhada: a 320px ele chega
+       aos 250px e um valor fixo ficava sempre curto ou exagerado). */
+    function medir() {
+      if (!banner || banner.hidden) return;
+      doc.documentElement.style.setProperty('--banner-h', banner.offsetHeight + 'px');
+    }
+    function show() {
+      if (!banner) return;
+      banner.hidden = false; doc.body.classList.add('tem-banner'); medir();
+    }
+    function hide() {
+      if (!banner) return;
+      banner.hidden = true; doc.body.classList.remove('tem-banner');
+      doc.documentElement.style.removeProperty('--banner-h');
+    }
+    var rb; window.addEventListener('resize', function () { clearTimeout(rb); rb = setTimeout(medir, 150); }, { passive: true });
     var cur = get();
     if (cur === 'accepted') loadMap();
     else if (cur !== 'rejected') show();

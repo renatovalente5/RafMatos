@@ -88,19 +88,33 @@ body.menu-open{overflow:hidden}
   .hero__media{order:-1;max-width:400px;margin-inline:auto;width:100%}
 }
 
-/* ---------------- SERVIÇOS ---------------- */
-.services__grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.2rem;margin-top:.5rem}
-.svc{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:1.7rem 1.5rem;box-shadow:var(--shadow-sm);transition:transform var(--t),box-shadow var(--t),border-color var(--t)}
-.svc:hover{transform:translateY(-5px);box-shadow:var(--shadow);border-color:var(--line-2)}
-.svc__icon{display:inline-flex;align-items:center;justify-content:center;width:56px;height:56px;border-radius:14px;background:var(--blue-050);color:var(--blue);margin-bottom:1.1rem}
-.svc__icon svg{width:30px;height:30px}
-.svc:nth-child(2n) .svc__icon{background:#FEF4D6;color:var(--yellow-600)}
-.svc__title{font-size:1.2rem}
-.svc__desc{margin-top:.5rem;color:var(--muted);font-size:.96rem}
-@media (max-width:600px){.services__grid{grid-template-columns:1fr 1fr;gap:.7rem}.svc{padding:1.15rem 1rem}.svc__icon{width:46px;height:46px;margin-bottom:.7rem}.svc__icon svg{width:25px;height:25px}.svc__title{font-size:1rem}.svc__desc{font-size:.85rem}}
+/* ---------------- SERVIÇOS (lista) ---------------- */
+/* É a primeira secção depois do hero: respira menos que as vizinhas, de propósito. */
+.section.services{padding-block:clamp(2.4rem,5.5vw,4.6rem)}
+.services .section-head{margin-bottom:clamp(1.3rem,3vw,2.1rem)}
+
+.services__list{max-width:980px;margin-inline:auto;border-top:3px solid var(--yellow);border-bottom:1px solid var(--line-2)}
+/* Base (telemóvel): ícone e nome na mesma linha, descrição por baixo. */
+.svc{display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-areas:"ico name" ". desc";column-gap:.65rem;row-gap:.1rem;padding-block:.9rem}
+.svc + .svc{border-top:1px solid var(--line)}
+.svc__icon{grid-area:ico;display:flex;margin-top:1px;color:var(--blue)}
+.svc__icon svg{width:20px;height:20px;flex:none}
+.svc__title{grid-area:name;font-size:1.08rem;line-height:1.25}
+.svc__desc{grid-area:desc;color:var(--body);font-size:.93rem;line-height:1.45}
+
+/* A partir do tablet: nome numa coluna, descrição noutra, alinhadas nas seis linhas.
+   A coluna do nome (7rem) é o nome mais comprido — «Eletricidade», 101px em Barlow,
+   109px na fonte de recurso enquanto a Barlow não carrega — e nem um pixel mais. */
+@media (min-width:720px){
+  .svc{grid-template-columns:auto 7rem minmax(0,1fr);grid-template-areas:"ico name desc";align-items:baseline;column-gap:.9rem;padding-block:1.05rem}
+  .svc__icon{align-self:start;margin-top:2px}
+  .svc__icon svg{width:22px;height:22px}
+  .svc__title{font-size:1.2rem}
+  .svc__desc{font-size:.95rem;line-height:1.5}
+}
 
 /* ---------------- ANTES & DEPOIS ---------------- */
-.ba__grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.4rem;margin-top:.5rem}
+.ba__grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(320px,100%),1fr));gap:1.4rem;margin-top:.5rem}
 .ba{background:#fff;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-sm)}
 .ba__stage{position:relative;aspect-ratio:4/3;overflow:hidden;user-select:none;touch-action:pan-y}
 .ba__img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
@@ -112,6 +126,10 @@ body.menu-open{overflow:hidden}
 .ba__grip{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:40px;height:40px;border-radius:50%;background:#fff;box-shadow:var(--shadow-sm);display:flex;align-items:center;justify-content:center;color:var(--blue);cursor:ew-resize}
 .ba__grip svg{width:22px;height:22px}
 .ba__range{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize;z-index:4;margin:0}
+/* Em ecras tacteis o arrasto e feito pelo main.js a partir do .ba__stage: um
+   input[type=range] salta para o x do dedo logo no toque, e isso fazia o
+   comparador mudar quando so se queria percorrer a pagina. */
+@media (pointer:coarse){.ba__range{pointer-events:none}}
 .ba__cap{padding:.9rem 1.1rem;font-family:var(--font-head);font-weight:600;color:var(--ink)}
 
 /* ---------------- OBRAS / GALERIA ---------------- */
@@ -122,35 +140,31 @@ body.menu-open{overflow:hidden}
 .gitem figcaption{position:absolute;left:0;right:0;bottom:0;padding:1.5rem .9rem .7rem;color:#fff;font-family:var(--font-head);font-weight:600;font-size:.92rem;background:linear-gradient(transparent,rgba(8,36,64,.85));opacity:0;transform:translateY(6px);transition:opacity var(--t),transform var(--t)}
 .gitem:hover figcaption{opacity:1;transform:none}
 @media (max-width:600px){.gallery{columns:2 140px;column-gap:.7rem}.gitem{margin-bottom:.7rem}}
-.lightbox{position:fixed;inset:0;z-index:200;background:rgba(6,20,40,.94);display:flex;align-items:center;justify-content:center;padding:5vw;opacity:0;visibility:hidden;transition:opacity .26s}
+.lightbox{position:fixed;inset:0;z-index:200;background:rgba(6,20,40,.94);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.8rem;padding:clamp(14px,5vw,48px);opacity:0;visibility:hidden;transition:opacity .26s}
 .lightbox.is-open{opacity:1;visibility:visible}
-.lightbox__img{max-width:100%;max-height:82vh;border-radius:10px;box-shadow:var(--shadow);background:#fff}
-.lightbox__cap{position:absolute;bottom:20px;left:0;right:0;text-align:center;color:#fff;font-family:var(--font-head);font-weight:600}
-.lightbox__btn{position:absolute;background:rgba(255,255,255,.14);color:#fff;border-radius:50%;width:52px;height:52px;display:flex;align-items:center;justify-content:center;font-size:1.7rem;line-height:1;border:1px solid rgba(255,255,255,.25)}
+.lightbox__figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:.7rem;max-width:100%;min-height:0}
+.lightbox__img{max-width:100%;max-height:74vh;border-radius:10px;box-shadow:var(--shadow);background:#fff;object-fit:contain}
+/* A legenda era position:absolute dentro da <figure>: caía POR CIMA da
+   fotografia, a branco sobre a imagem, com 2,8:1 de contraste. Agora fica por
+   baixo, sobre o fundo escuro, onde se lê. */
+.lightbox__cap{text-align:center;color:#fff;font-family:var(--font-head);font-weight:600;max-width:56ch}
+/* z-index: os botões «Fechar» e «Anterior» vêm ANTES da <figure> no DOM e
+   nenhum declarava z-index, por isso a fotografia pintava por cima deles — a
+   320px tapava 44 dos 52px do «Anterior» e o toque caía na imagem. */
+.lightbox__btn{position:absolute;z-index:2;background:rgba(255,255,255,.14);color:#fff;border-radius:50%;width:52px;height:52px;display:flex;align-items:center;justify-content:center;line-height:1;border:1px solid rgba(255,255,255,.25)}
 .lightbox__btn:hover{background:rgba(255,255,255,.3)}
-.lightbox__figure{margin:0;position:relative;display:flex;flex-direction:column;align-items:center}
-.lightbox__btn--close{top:18px;right:18px}
-.lightbox__btn--close svg,.lightbox__btn--prev svg,.lightbox__btn--next svg{width:24px;height:24px}
-.lightbox__btn--prev{left:2.5vw;top:50%;transform:translateY(-50%)}
-.lightbox__btn--next{right:2.5vw;top:50%;transform:translateY(-50%)}
-
-/* ---------------- SOBRE ---------------- */
-.about__grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(1.8rem,4vw,3rem);align-items:center}
-.about__media img{border-radius:var(--radius-lg);box-shadow:var(--shadow);width:100%;aspect-ratio:4/5;object-fit:cover;border:1px solid var(--line)}
-.about__copy .section-title{margin-top:.55rem}
-.about__copy p{margin-top:1rem;color:var(--body)}
-.about__copy p strong{color:var(--ink)}
-@media (max-width:820px){.about__grid{grid-template-columns:1fr}.about__media{max-width:380px;margin-inline:auto}}
-
-/* ---------------- VALORES ---------------- */
-.values{display:grid;grid-template-columns:1fr;gap:1rem;margin-top:1.7rem}
-.value{display:flex;gap:.9rem;align-items:flex-start}
-.value__icon{flex:none;width:46px;height:46px;border-radius:12px;background:var(--blue-050);color:var(--blue);display:flex;align-items:center;justify-content:center}
-.value__icon svg{width:24px;height:24px}
-.value:nth-child(2) .value__icon{background:#FEF4D6;color:var(--yellow-600)}
-.value div{display:flex;flex-direction:column}
-.value b{font-family:var(--font-head);font-weight:700;color:var(--ink)}
-.value span{color:var(--muted);font-size:.94rem}
+.lightbox__btn svg{width:24px;height:24px;pointer-events:none}
+.lightbox__btn--close{top:14px;right:14px}
+.lightbox__btn--prev{left:16px;top:50%;transform:translateY(-50%)}
+.lightbox__btn--next{right:16px;top:50%;transform:translateY(-50%)}
+@media (max-width:780px){
+  /* Num telemóvel não há folga lateral para as setas: aterravam em cima da
+     fotografia. Descem para uma barra ao centro, ao alcance do polegar. */
+  .lightbox{padding-top:78px;padding-bottom:86px}
+  .lightbox__img{max-height:60vh}
+  .lightbox__btn--prev{left:50%;top:auto;bottom:18px;transform:translateX(calc(-100% - .45rem))}
+  .lightbox__btn--next{right:50%;top:auto;bottom:18px;transform:translateX(calc(100% + .45rem))}
+}
 
 /* ---------------- OBRAS · CTA ---------------- */
 .obras__cta{margin-top:2.4rem;display:flex;flex-direction:column;align-items:center;gap:.9rem;text-align:center}
@@ -169,7 +183,7 @@ body.menu-open{overflow:hidden}
 .contact__ic{flex:none;width:46px;height:46px;border-radius:50%;background:var(--blue-050);color:var(--blue);display:flex;align-items:center;justify-content:center;border:1px solid #D8E5F6}
 .contact__ic svg{width:21px;height:21px}
 .contact__list small{color:var(--muted);display:block;font-size:.76rem;text-transform:uppercase;letter-spacing:.05em;font-weight:600}
-.contact__list a{color:var(--ink);font-family:var(--font-head);font-weight:700;display:block;font-size:1.05rem}
+.contact__list a{color:var(--ink);font-family:var(--font-head);font-weight:700;display:inline-flex;align-items:center;min-height:44px;font-size:1.05rem}
 .contact__list a:hover{color:var(--blue)}
 .contact__list li>div span{display:block}
 .contact__list .call-note{font-family:var(--font-body);font-weight:400;text-transform:none;letter-spacing:0;opacity:.72}
@@ -194,8 +208,12 @@ body.menu-open{overflow:hidden}
 .footer__social a:hover{background:var(--yellow);color:var(--navy);transform:translateY(-2px)}
 .footer__social svg{width:22px;height:22px}
 .footer__col h4{color:#fff;font-size:1.05rem;margin-bottom:.9rem;font-family:var(--font-head)}
-.footer__col ul{display:flex;flex-direction:column;gap:.5rem;list-style:none;padding:0;margin:0}
+.footer__col ul{display:flex;flex-direction:column;list-style:none;padding:0;margin:0}
 .footer__col a{color:#B9C7DA;font-size:.95rem}.footer__col a:hover{color:#fff}
+/* Eram 19px de altura (e o «Obras» 43x19). Agora cada linha e um alvo de 44.
+   So na coluna de navegacao: a dos contactos e tambem um <ul> dentro de um
+   .footer__col, e apanhada por engano desalinhava o telefone do seu icone. */
+nav.footer__col ul a{display:inline-flex;align-items:center;min-height:44px;min-width:44px}
 .footer__contact li{display:flex;gap:.6rem;align-items:flex-start;font-size:.95rem}
 .footer__contact .fic{flex:none;color:var(--yellow);margin-top:2px}
 .footer__contact .fic svg{width:18px;height:18px}
@@ -205,31 +223,47 @@ body.menu-open{overflow:hidden}
 .footer__bar-in{display:flex;flex-wrap:wrap;gap:.8rem 1.4rem;align-items:center;justify-content:space-between}
 .footer__legal{color:#8F9DB4}
 .footer__links{display:flex;flex-wrap:wrap;gap:.5rem 1.1rem;list-style:none;padding:0;margin:0}
-.footer__links a{color:#B9C7DA}.footer__links a:hover{color:#fff;text-decoration:underline}
+.footer__links a{color:#B9C7DA;display:inline-flex;align-items:center;min-height:44px}
+.footer__links a:hover{color:#fff;text-decoration:underline}
 @media (max-width:760px){.footer__grid{grid-template-columns:1fr;gap:1.8rem}.footer__bar-in{flex-direction:column;align-items:flex-start}}
 
 /* ---------------- BANNER DE COOKIES ---------------- */
 .cookie{position:fixed;left:0;right:0;bottom:0;z-index:180;padding-inline:var(--gutter)}
+body.menu-open .cookie{display:none}
+/* Enquanto nao for respondido, o banner assenta em cima da barra legal do
+   rodape (identificacao, Livro de Reclamacoes). Damos ao rodape a altura do
+   banner — o main.js mede-a e escreve-a em --banner-h; o clamp e so o valor
+   de recurso enquanto o JS nao correr. */
+body.tem-banner .footer__bar{padding-bottom:calc(1.3rem + var(--banner-h, clamp(9rem,55vw,16rem)))}
 .cookie__inner{max-width:var(--maxw);margin:0 auto 14px;background:#fff;color:var(--body);border:1px solid var(--line-2);border-left:4px solid var(--yellow);border-radius:var(--radius);box-shadow:var(--shadow);padding:1rem 1.2rem;display:flex;align-items:center;gap:1.2rem;flex-wrap:wrap}
 .cookie__inner p{font-size:.9rem;line-height:1.5;flex:1;min-width:240px}.cookie__inner strong{color:var(--ink)}.cookie__inner a{color:var(--blue);text-decoration:underline}
 .cookie__actions{display:flex;gap:.6rem;flex:none}
 .cookie__actions .btn--outline{border-color:var(--line-2);color:var(--ink)}
 .cookie__actions .btn--outline:hover{border-color:var(--blue);color:var(--blue)}
-@media (max-width:520px){.cookie__actions{width:100%}.cookie__actions .btn{flex:1}}
+/* Sem o white-space:nowrap (que fazia botoes de 440px com o texto a 200%),
+   «Aceitar mapa» partia-se em duas linhas a 320px por 2px de folga. */
+@media (max-width:520px){.cookie__actions{width:100%}.cookie__actions .btn{flex:1;padding-inline:.7em}}
 
 /* ---------------- PÁGINAS LEGAIS ---------------- */
 .legalhead{position:sticky;top:0;z-index:50;background:linear-gradient(160deg,#0B4A93,#0A2440);border-bottom:1px solid rgba(255,255,255,.1)}
 .legalhead .container{display:flex;align-items:center;justify-content:space-between;padding-block:10px;gap:1rem}
-.legalhead .nav__brand{display:inline-flex;align-items:center;gap:.6rem}
+.legalhead .nav__brand{display:inline-flex;align-items:center;gap:.6rem;min-width:0}
 .legalhead .nav__mark{height:42px;width:auto}
 .legalhead .nav__word-img{height:20px;width:auto}
-.legalhead a.legal__back{font-family:var(--font-head);font-weight:600;color:#DCE6F2}
+/* A 320px partia-se em tres linhas («←» / «Voltar» / «ao site») e empurrava o
+   cabecalho fixo para 100px de altura. E e o unico caminho de volta ao site. */
+.legalhead a.legal__back{font-family:var(--font-head);font-weight:600;color:#DCE6F2;white-space:nowrap;display:inline-flex;align-items:center;min-height:44px}
 .legalhead a.legal__back:hover{color:#fff}
 .legal{max-width:820px;margin:2.6rem auto 4rem;padding-inline:var(--gutter)}
 .legal h1{font-size:clamp(2rem,4vw,2.7rem);margin-bottom:.3rem}
 .legal .updated{color:var(--muted);font-size:.9rem;margin-bottom:2rem}
 .legal h2{font-size:1.28rem;margin:2rem 0 .6rem}
-.legal p,.legal li{color:var(--body);margin-bottom:.7rem}
+/* Com o texto do sistema a 200%, «www.livroreclamacoes.pt» media 382px numa
+   caixa de 249px e saia do ecra — sem barra de scroll, porque o body tem
+   overflow-x:hidden. Cortado em silencio. */
+.legal p,.legal li{color:var(--body);margin-bottom:.7rem;overflow-wrap:break-word}
+.legal h1,.legal h2{overflow-wrap:break-word}
+.legal a{overflow-wrap:anywhere}
 .legal ul{padding-left:1.25rem;list-style:disc;margin-bottom:.7rem}
 .legal a{color:var(--blue);text-decoration:underline;text-underline-offset:2px}
 .legal__foot{border-top:1px solid var(--line);padding:1.6rem 0;text-align:center;color:var(--muted);font-size:.85rem}
