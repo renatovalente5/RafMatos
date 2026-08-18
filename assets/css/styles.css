@@ -212,43 +212,65 @@ body.menu-open{overflow:hidden}
 @media (pointer:coarse){.ba__range{pointer-events:none}}
 .ba__cap{padding:.9rem 1.1rem;font-family:var(--font-head);font-weight:600;color:var(--ink)}
 
-/* ---------------- OBRAS / GALERIA ---------------- */
-.gallery{columns:4 250px;column-gap:1rem}
-.gitem{break-inside:avoid;margin:0 0 1rem;position:relative;border-radius:var(--radius);overflow:hidden;cursor:zoom-in;box-shadow:var(--shadow-sm);display:block}
-.gitem img{width:100%;display:block;transition:transform .6s var(--ease)}
-.gitem:hover img{transform:scale(1.05)}
-.gitem figcaption{position:absolute;left:0;right:0;bottom:0;padding:1.5rem .9rem .7rem;color:#fff;font-family:var(--font-head);font-weight:600;font-size:.92rem;background:linear-gradient(transparent,rgba(8,36,64,.85));opacity:0;transform:translateY(6px);transition:opacity var(--t),transform var(--t)}
-.gitem:hover figcaption{opacity:1;transform:none}
-@media (max-width:600px){.gallery{columns:2 140px;column-gap:.7rem}.gitem{margin-bottom:.7rem}}
-.lightbox{position:fixed;inset:0;z-index:200;background:rgba(6,20,40,.94);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.8rem;padding:clamp(14px,5vw,48px);opacity:0;visibility:hidden;transition:opacity .26s}
-.lightbox.is-open{opacity:1;visibility:visible}
-.lightbox__figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:.7rem;max-width:100%;min-height:0}
-.lightbox__img{max-width:100%;max-height:74vh;border-radius:10px;box-shadow:var(--shadow);background:#fff;object-fit:contain}
-/* A legenda era position:absolute dentro da <figure>: caía POR CIMA da
-   fotografia, a branco sobre a imagem, com 2,8:1 de contraste. Agora fica por
-   baixo, sobre o fundo escuro, onde se lê. */
-.lightbox__cap{text-align:center;color:#fff;font-family:var(--font-head);font-weight:600;max-width:56ch}
-/* z-index: os botões «Fechar» e «Anterior» vêm ANTES da <figure> no DOM e
-   nenhum declarava z-index, por isso a fotografia pintava por cima deles — a
-   320px tapava 44 dos 52px do «Anterior» e o toque caía na imagem. */
-.lightbox__btn{position:absolute;z-index:2;background:rgba(255,255,255,.14);color:#fff;border-radius:50%;width:52px;height:52px;display:flex;align-items:center;justify-content:center;line-height:1;border:1px solid rgba(255,255,255,.25)}
-.lightbox__btn:hover{background:rgba(255,255,255,.3)}
-.lightbox__btn svg{width:24px;height:24px;pointer-events:none}
-.lightbox__btn--close{top:14px;right:14px}
-.lightbox__btn--prev{left:16px;top:50%;transform:translateY(-50%)}
-.lightbox__btn--next{right:16px;top:50%;transform:translateY(-50%)}
-@media (max-width:780px){
-  /* Num telemóvel não há folga lateral para as setas: aterravam em cima da
-     fotografia. Descem para uma barra ao centro, ao alcance do polegar. */
-  .lightbox{padding-top:78px;padding-bottom:86px}
-  .lightbox__img{max-height:60vh}
-  .lightbox__btn--prev{left:50%;top:auto;bottom:18px;transform:translateX(calc(-100% - .45rem))}
-  .lightbox__btn--next{right:50%;top:auto;bottom:18px;transform:translateX(calc(100% + .45rem))}
-}
+/* ---------------- OBRAS / GALERIA ---------------- *
+   Grelha regular: TODAS as fotografias na mesma moldura 3:4 (retrato).
+   Porque: as 12 originais so tem dois extremos e nada pelo meio — 0,45
+   (vertical de telemovel, 8 ficheiros) e 2,23 (corte panoramico herdado do
+   Facebook, 4 ficheiros). O mosaico por colunas herdava essas proporcoes e
+   punha uma tira altissima ao lado de uma nesga achatada. Aqui a moldura e
+   sempre a mesma e a fotografia entra em `cover`.
+   Escolheu-se retrato (e nao quadrado) porque 8 das 12 ja sao verticais: o
+   3:4 guarda-lhes 60% da altura contra 45% do quadrado, e assenta no formato
+   do proprio telemovel.
+   O que o corte tira nao se perde: a lightbox abre a fotografia inteira
+   (object-fit:contain) — e o texto da seccao diz isso ao visitante.
 
-/* ---------------- OBRAS · CTA ---------------- */
-.obras__cta{margin-top:2.4rem;display:flex;flex-direction:column;align-items:center;gap:.9rem;text-align:center}
-.obras__cta p{font-family:var(--font-head);font-weight:600;font-size:1.15rem;color:var(--ink)}
+   COLUNAS: 2 / 3 / 4. Todas dividem 12 e 6 sem sobras, por isso nunca ha
+   ultima linha coxa — nem com os 6 iniciais do data-collapse nem com os 12
+   depois do "Ver mais". Se um dia o numero de fotografias deixar de ser
+   multiplo de 12 e de 6, a ultima linha fica incompleta (nao parte nada). */
+.gallery{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.7rem}
+@media (min-width:601px){.gallery{grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}}
+@media (min-width:960px){.gallery{grid-template-columns:repeat(4,minmax(0,1fr))}}
+
+.gitem{position:relative;margin:0;border-radius:var(--radius);overflow:hidden;cursor:zoom-in;box-shadow:var(--shadow-sm);background:var(--bg-soft);display:block}
+/* aspect-ratio na propria <img> (e nao na <figure>) reserva a caixa antes de
+   a fotografia carregar: a galeria deixa de empurrar a pagina para baixo
+   quando as imagens chegam (medido: 0px de layout shift em toda a linha). */
+.gitem img{width:100%;height:auto;aspect-ratio:3/4;object-fit:cover;object-position:var(--pos,50% 50%);display:block;transition:transform .6s var(--ease)}
+/* O guarda (hover:hover) e obrigatorio: sem ele o :hover fica agarrado ao
+   tile depois de um toque e a fotografia continua ampliada. */
+@media (hover:hover){.gitem:hover img{transform:scale(1.05)}}
+
+/* ENQUADRAMENTO: vive no HTML, em style="--pos:x y", ao lado do <img> a que
+   pertence. Deliberadamente NAO em selectores por nome de ficheiro: esses
+   falham em silencio quando alguem renomeia ou substitui uma fotografia.
+   Fotografia nova entra sem --pos e fica ao centro; se o assunto estiver
+   descentrado, acrescenta-se --pos a essa <figure>. O centro geometrico
+   raramente e o centro do assunto — as 4 panoramicas perdem 66% da largura
+   e as 8 verticais 40% da altura. */
+
+/* LEGENDA sempre visivel. Antes so aparecia no :hover, ou seja NUNCA no
+   telemovel — e o cliente ve o site no telemovel. Fica sobreposta dentro da
+   moldura 3:4, por isso custa ZERO pixels de altura a seccao.
+   O veu e de alfa FIXO (nao um degrade por baixo do texto): assim o contraste
+   nao depende da fotografia nem do numero de linhas da legenda. Branco sobre
+   rgba(22,35,58,.9) — o token --ink — da 11,6:1 no pior caso possivel (uma
+   fotografia 100% branca). AA pede 4,5:1. Escolheu-se --ink e nao --navy
+   porque o azul saturado lia-se como um autocolante colado sobre as
+   fotografias claras; o --ink le-se como sombra.
+   O esbatimento por cima e uma curva acelerada (quase nada no topo) para nao
+   deixar aresta visivel — um degrade linear cria uma banda de Mach no inicio.
+   `pointer-events:none` deixa o toque atravessar para a imagem e abrir a
+   lightbox. */
+.gitem figcaption{position:absolute;left:0;right:0;bottom:0;padding:.42rem .5rem .48rem;color:#fff;font-family:var(--font-head);font-weight:600;font-size:.77rem;line-height:1.25;background:rgba(22,35,58,.9);text-shadow:0 1px 3px rgba(22,35,58,.6);pointer-events:none}
+.gitem figcaption::before{content:"";position:absolute;left:0;right:0;bottom:100%;height:2.4rem;background:linear-gradient(180deg,rgba(22,35,58,0) 0%,rgba(22,35,58,.06) 30%,rgba(22,35,58,.18) 50%,rgba(22,35,58,.40) 68%,rgba(22,35,58,.66) 84%,rgba(22,35,58,.9) 100%)}
+/* A legenda so cresce aos 760px. O corte a 601px e o da GRELHA (3 colunas),
+   e a 601px uma coluna de 3 e tao estreita como uma de 2 num telemovel:
+   subir ali a fonte punha quatro legendas a partir em duas linhas. */
+@media (min-width:760px){.gitem figcaption{padding:.55rem .8rem .6rem;font-size:.9rem}}
+
+@media (prefers-reduced-motion:reduce){.gitem img{transition:none}.gitem:hover img{transform:none}}
 
 /* ---------------- VER MAIS (mobile) ---------------- */
 .more-wrap{margin-top:1.5rem;display:flex;justify-content:center}

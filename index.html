@@ -48,7 +48,7 @@
   <link rel="preload" as="font" type="font/woff2" href="assets/fonts/inter-var.woff2" crossorigin />
   <link rel="stylesheet" href="assets/css/fonts.css?v=be308d42" />
   <link rel="stylesheet" href="assets/css/base.css?v=c4ff5a0f" />
-  <link rel="stylesheet" href="assets/css/styles.css?v=4b74f4ee" />
+  <link rel="stylesheet" href="assets/css/styles.css?v=bbd5b00d" />
 </head>
 <body>
   <a class="skip-link" href="#conteudo">Saltar para o conteúdo</a>
@@ -262,26 +262,31 @@
       </div>
     </section>
     <!-- ================= OBRAS / TRABALHOS ================= -->
-    <section id="obras" class="section">
+<![CDATA[    <section id="obras" class="section">
       <div class="container">
         <div class="section-head section-head--center" data-reveal>
           <span class="eyebrow">Portfólio</span>
           <h2 class="section-title">Obras que falam por nós</h2>
-          <p class="section-lead">Clique numa imagem para ver em detalhe.</p>
+          <p class="section-lead">Clique numa imagem para ver a fotografia inteira.</p>
         </div>
+        <!-- Ordem editorial: as 6 primeiras (as unicas que o telemovel mostra
+             antes do "Ver mais") sao obra ACABADA. Obra em curso vem depois.
+             Como todas as molduras sao iguais e 2/3/4 colunas dividem 6 e 12
+             sem sobras, a ordem nao tem efeito nenhum no alinhamento.
+             --pos = enquadramento desta fotografia; sem --pos fica ao centro. -->
         <div id="gallery-grid" class="gallery" data-reveal data-collapse="6">
-          <figure class="gitem"><img src="assets/img/obras/cozinha-branca.jpg" alt="Cozinha branca remodelada" loading="lazy" /><figcaption>Cozinha remodelada</figcaption></figure>
-          <figure class="gitem"><img src="assets/img/obras/teto-pladur.jpg" alt="Teto em pladur com iluminação" loading="lazy" /><figcaption>Teto em pladur com LED</figcaption></figure>
-          <figure class="gitem"><img src="assets/img/obras/tijoleira-marmore.jpg" alt="Pavimento em tijoleira tipo mármore" loading="lazy" /><figcaption>Pavimento tipo mármore</figcaption></figure>
-          <figure class="gitem"><img src="assets/img/obras/wc-moderno.jpg" alt="Casa de banho moderna" loading="lazy" /><figcaption>Casa de banho moderna</figcaption></figure>
-          <figure class="gitem"><img src="assets/img/obras/interior-ripado.jpg" alt="Parede com ripado decorativo" loading="lazy" /><figcaption>Parede ripada decorativa</figcaption></figure>
-          <figure class="gitem"><img src="assets/img/obras/escada-led.jpg" alt="Escada com iluminação LED" loading="lazy" /><figcaption>Escada com iluminação LED</figcaption></figure>
-          <figure class="gitem"><img src="assets/img/obras/telha-nova.jpg" alt="Telhado com telha nova" loading="lazy" /><figcaption>Telhado renovado</figcaption></figure>
-          <figure class="gitem"><img src="assets/img/obras/pladur-corredor.jpg" alt="Corredor com teto de pladur" loading="lazy" /><figcaption>Corredor em pladur</figcaption></figure>
-          <figure class="gitem"><img src="assets/img/obras/corredor-portas.jpg" alt="Corredor com portas novas" loading="lazy" /><figcaption>Corredor e portas</figcaption></figure>
-          <figure class="gitem"><img src="assets/img/obras/estrutura-telhado.jpg" alt="Estrutura de telhado em construção" loading="lazy" /><figcaption>Estrutura de telhado</figcaption></figure>
-          <figure class="gitem"><img src="assets/img/obras/obra-janela.jpg" alt="Instalação de janela" loading="lazy" /><figcaption>Vãos e janelas</figcaption></figure>
-          <figure class="gitem"><img src="assets/img/obras/obra-em-curso.jpg" alt="Obra em curso" loading="lazy" /><figcaption>Obra em curso</figcaption></figure>
+          <figure class="gitem"><img src="assets/img/obras/wc-moderno.jpg" alt="Casa de banho moderna" loading="lazy" style="--pos:50% 65%" /><figcaption>Casa de banho moderna</figcaption></figure>
+          <figure class="gitem"><img src="assets/img/obras/escada-led.jpg" alt="Escada com iluminação LED" loading="lazy" style="--pos:40% 50%" /><figcaption>Escada com LED</figcaption></figure>
+          <figure class="gitem"><img src="assets/img/obras/cozinha-branca.jpg" alt="Cozinha branca remodelada" loading="lazy" style="--pos:24% 50%" /><figcaption>Cozinha remodelada</figcaption></figure>
+          <figure class="gitem"><img src="assets/img/obras/interior-ripado.jpg" alt="Parede com ripado decorativo" loading="lazy" style="--pos:50% 22%" /><figcaption>Parede ripada decorativa</figcaption></figure>
+          <figure class="gitem"><img src="assets/img/obras/telha-nova.jpg" alt="Telhado com telha nova" loading="lazy" style="--pos:50% 45%" /><figcaption>Telhado renovado</figcaption></figure>
+          <figure class="gitem"><img src="assets/img/obras/corredor-portas.jpg" alt="Corredor com portas novas" loading="lazy" style="--pos:50% 78%" /><figcaption>Corredor e portas</figcaption></figure>
+          <figure class="gitem"><img src="assets/img/obras/teto-pladur.jpg" alt="Teto em pladur com iluminação" loading="lazy" style="--pos:20% 50%" /><figcaption>Teto em pladur com LED</figcaption></figure>
+          <figure class="gitem"><img src="assets/img/obras/tijoleira-marmore.jpg" alt="Pavimento em tijoleira tipo mármore" loading="lazy" style="--pos:50% 100%" /><figcaption>Revestimento tipo mármore</figcaption></figure>
+          <figure class="gitem"><img src="assets/img/obras/pladur-corredor.jpg" alt="Corredor com teto de pladur" loading="lazy" style="--pos:50% 28%" /><figcaption>Corredor em pladur</figcaption></figure>
+          <figure class="gitem"><img src="assets/img/obras/obra-janela.jpg" alt="Instalação de janela" loading="lazy" style="--pos:38% 50%" /><figcaption>Vãos e janelas</figcaption></figure>
+          <figure class="gitem"><img src="assets/img/obras/estrutura-telhado.jpg" alt="Estrutura de telhado em construção" loading="lazy" style="--pos:15% 50%" /><figcaption>Estrutura de telhado</figcaption></figure>
+          <figure class="gitem"><img src="assets/img/obras/obra-em-curso.jpg" alt="Obra em curso" loading="lazy" style="--pos:50% 22%" /><figcaption>Obra em curso</figcaption></figure>
         </div>
         <div class="more-wrap" hidden>
           <button class="btn btn--outline more-btn" type="button" data-more="#gallery-grid">Ver mais</button>
@@ -291,7 +296,7 @@
           <a class="btn btn--primary" href="#contacto">Pedir orçamento</a>
         </div>
       </div>
-    </section>
+    </section>]]>
         <!-- ================= CONTACTO ================= -->
     <section id="contacto" class="section">
       <div class="container">
