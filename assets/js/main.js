@@ -200,6 +200,123 @@
     doc.addEventListener('keydown', function (e) { if (!lb.classList.contains('is-open')) return; if (e.key === 'Escape') closeLB(); else if (e.key === 'ArrowLeft') openLB(cur - 1); else if (e.key === 'ArrowRight') openLB(cur + 1); });
   }
 
+  /* ---------- Carrossel de obras: setas + barra de progresso ---------- *
+     A faixa ja se percorre sem uma linha de JS — scroll nativo com scroll-snap.
+     Isto e so o extra por cima. Por isso as setas e a barra nascem com `hidden`
+     no HTML e e daqui que se mostram: quem chegar sem JS nao fica com controlos
+     mortos no ecra. */
+  (function () {
+    var faixa = doc.getElementById('gallery-grid');
+    var caixa = faixa && faixa.closest ? faixa.closest('.carrossel') : null;
+    if (!faixa || !caixa) return;
+    var setas = caixa.querySelectorAll('[data-car]');
+    var barra = caixa.querySelector('.carrossel__barra');
+    var polegar = barra ? barra.querySelector('.carrossel__polegar') : null;
+    var pouco = window.matchMedia('(prefers-reduced-motion:reduce)');
+    function comportamento() { return pouco.matches ? 'auto' : 'smooth'; }
+
+    /* Passo = distancia entre o inicio de duas pecas (largura + intervalo),
+       MEDIDA e nao calculada: a largura vem de um calc() com --n que muda em
+       cada breakpoint, e uma constante em JS ficava desalinhada do CSS ao
+       primeiro redimensionamento ou ao primeiro zoom. */
+    function passo() {
+      var a = faixa.firstElementChild, b = a && a.nextElementSibling;
+      if (!a) return faixa.clientWidth;
+      var ra = a.getBoundingClientRect();
+      return b ? (b.getBoundingClientRect().left - ra.left) : ra.width;
+    }
+    function limite() { return faixa.scrollWidth - faixa.clientWidth; }
+    function andar(dir) { faixa.scrollBy({ left: dir * passo(), behavior: comportamento() }); }
+    function ir(x) { faixa.scrollTo({ left: x, behavior: comportamento() }); }
+
+    var pendente = false;
+    function estado() {
+      pendente = false;
+      var max = limite(), x = faixa.scrollLeft;
+      /* 2px de tolerancia: as molduras sao uma percentagem, o scrollLeft maximo
+         cai quase sempre numa fraccao de pixel e um teste exacto nunca dava o
+         fim como fim. */
+      var inicio = x <= 2, fim = x >= max - 2;
+      setas.forEach(function (b) {
+        var morta = b.getAttribute('data-car') === 'next' ? fim : inicio;
+        /* Se a seta que TEM O FOCO se desactivar, o foco cai no <body> e o
+           utilizador de teclado fica sem sitio nenhum a meio da navegacao.
+           Passa-se o foco a outra seta antes de a desligar. */
+        if (morta && !b.disabled && b === doc.activeElement) {
+          var outra = caixa.querySelector('[data-car="' + (b.getAttribute('data-car') === 'next' ? 'prev' : 'next') + '"]');
+          if (outra) outra.focus();
+        }
+        b.disabled = morta;
+      });
+      if (barra && polegar) {
+        /* Se um dia couberem todas as fotografias no ecra, a barra nao tem nada
+           para dizer e desaparece em vez de ficar cheia. */
+        var ha = max > 4;
+        barra.hidden = !ha;
+        if (ha) {
+          var frac = faixa.clientWidth / faixa.scrollWidth;
+          polegar.style.width = (frac * 100).toFixed(3) + '%';
+          polegar.style.transform = 'translateX(' + ((x / max) * (100 / frac - 100)).toFixed(3) + '%)';
+        }
+      }
+    }
+    function agendar() { if (!pendente) { pendente = true; window.requestAnimationFrame(estado); } }
+
+    setas.forEach(function (b) {
+      b.hidden = false;
+      b.addEventListener('click', function () { andar(b.getAttribute('data-car') === 'next' ? 1 : -1); });
+    });
+    if (barra) barra.hidden = false;
+    faixa.addEventListener('scroll', agendar, { passive: true });
+    window.addEventListener('resize', agendar, { passive: true });
+
+    /* Tocar numa peca CORTADA pelo bordo traz essa peca para dentro, em vez de
+       abrir a lightbox. A nesga da direita tem 44px e fica no bordo do ecra, que
+       e onde o polegar direito bate por acidente; abrir uma fotografia a ecra
+       inteiro a partir de uma fatia que mal se ve parecia um erro do site.
+       Vale para os dois lados, e a conta e a mesma nos dois: se a peca nao esta
+       inteira dentro da janela, o clique e um pedido para a ver.
+       Fase de CAPTURA, para chegar antes do delegado da lightbox — que esta
+       ligado a esta mesma faixa e nao se toca. */
+    faixa.addEventListener('click', function (e) {
+      var f = e.target.closest ? e.target.closest('.gitem') : null;
+      if (!f) return;
+      var rf = faixa.getBoundingClientRect(), rp = f.getBoundingClientRect();
+      /* 4px de tolerancia: as molduras sao uma percentagem e a peca que esta
+         "inteira" cai quase sempre a uma fraccao de pixel do bordo. */
+      if (Math.min(rp.right, rf.right) - Math.max(rp.left, rf.left) >= rp.width - 4) return;
+      e.stopPropagation();
+      var cs = window.getComputedStyle(faixa);
+      var pad = parseFloat(cs.paddingInlineStart || cs.paddingLeft) || 0;
+      faixa.scrollBy({ left: rp.left - rf.left - pad, behavior: comportamento() });
+    }, true);
+
+    /* Teclado. A faixa tem tabindex no HTML, por isso ate sem JS o browser ja
+       lhe move o scroll com as setas — no Chrome, e MEDIDO, de peca em peca
+       (0 -> 329 -> 657). Nao trocamos isso por gosto: trocamos porque o passo
+       nativo depende de cada browser implementar o snap por teclado, e porque
+       so daqui se consegue calar as setas quando a lightbox esta aberta —
+       ela abre a partir de um clique DENTRO da faixa (que assim fica com o
+       foco) e usa as mesmas setas para mudar de fotografia. */
+    faixa.addEventListener('keydown', function (e) {
+      var k = e.key;
+      if (k !== 'ArrowRight' && k !== 'ArrowLeft' && k !== 'Home' && k !== 'End') return;
+      /* O preventDefault vem ANTES da guarda, e nao depois: a faixa e um
+         contentor com scroll E com foco, por isso o browser tambem lhe mexe
+         sozinho. Medido: com a lightbox aberta, sair da funcao sem travar o
+         evento deixava a faixa andar 329px por tras dela. */
+      e.preventDefault();
+      if (doc.body.classList.contains('menu-open')) return;
+      if (k === 'ArrowRight') andar(1);
+      else if (k === 'ArrowLeft') andar(-1);
+      else if (k === 'Home') ir(0);
+      else ir(limite());
+    });
+
+    estado();
+    window.addEventListener('load', estado);
+  })();
+
   /* ---------- "Ver mais" (encurtar secções no telemóvel) ---------- */
   (function () {
     var mq = window.matchMedia('(max-width:600px)');

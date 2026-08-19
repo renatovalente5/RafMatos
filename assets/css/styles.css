@@ -279,103 +279,238 @@ body.menu-open{overflow:hidden}
 @media (pointer:coarse){.ba__range{pointer-events:none}}
 .ba__cap{padding:.9rem 1.1rem;font-family:var(--font-head);font-weight:600;color:var(--ink)}
 
-/* ---------------- LIGHTBOX ---------------- */
-/* Este bloco ja se perdeu uma vez: o recorte que substituiu o CSS da
-   galeria recuou ate ao comentario anterior e levou-o a frente. Sem ele
-   a lightbox fica sem position, sem fundo e sem visibility — o clique
-   acrescentava a classe .is-open e nao acontecia nada visivel, que foi
-   exactamente o «nao da para clicar na imagem» que o cliente descreveu.
-   Quem mexer no CSS da galeria: este bloco vive AO LADO e nao faz parte
-   dela. */
-.lightbox{position:fixed;inset:0;z-index:200;background:rgba(6,20,40,.94);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.8rem;padding:clamp(14px,5vw,48px);opacity:0;visibility:hidden;transition:opacity .26s}
-.lightbox.is-open{opacity:1;visibility:visible}
-.lightbox__figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:.7rem;max-width:100%;min-height:0}
-.lightbox__img{max-width:100%;max-height:74vh;border-radius:10px;box-shadow:var(--shadow);background:#fff;object-fit:contain}
-/* A legenda era position:absolute dentro da <figure>: caía POR CIMA da
-   fotografia, a branco sobre a imagem, com 2,8:1 de contraste. Agora fica por
-   baixo, sobre o fundo escuro, onde se lê. */
-.lightbox__cap{text-align:center;color:#fff;font-family:var(--font-head);font-weight:600;max-width:56ch}
-/* z-index: os botões «Fechar» e «Anterior» vêm ANTES da <figure> no DOM e
-   nenhum declarava z-index, por isso a fotografia pintava por cima deles — a
-   320px tapava 44 dos 52px do «Anterior» e o toque caía na imagem. */
-.lightbox__btn{position:absolute;z-index:2;background:rgba(255,255,255,.14);color:#fff;border-radius:50%;width:52px;height:52px;display:flex;align-items:center;justify-content:center;line-height:1;border:1px solid rgba(255,255,255,.25)}
-.lightbox__btn:hover{background:rgba(255,255,255,.3)}
-.lightbox__btn svg{width:24px;height:24px;pointer-events:none}
-.lightbox__btn--close{top:14px;right:14px}
-.lightbox__btn--prev{left:16px;top:50%;transform:translateY(-50%)}
-.lightbox__btn--next{right:16px;top:50%;transform:translateY(-50%)}
-@media (max-width:780px){
-  /* Num telemóvel não há folga lateral para as setas: aterravam em cima da
-     fotografia. Descem para uma barra ao centro, ao alcance do polegar. */
-  .lightbox{padding-top:78px;padding-bottom:86px}
-  .lightbox__img{max-height:60vh}
-  .lightbox__btn--prev{left:50%;top:auto;bottom:18px;transform:translateX(calc(-100% - .45rem))}
-  .lightbox__btn--next{right:50%;top:auto;bottom:18px;transform:translateX(calc(100% + .45rem))}
+/* ---------------- OBRAS / CARROSSEL ---------------- *
+   FAIXA COM ESPREITADELA. Uma unica fila horizontal com scroll nativo e
+   scroll-snap: ve-se a peca actual e uma nesga da seguinte encostada ao bordo
+   direito. Essa nesga E a afordancia — diz "ha mais, arraste" sem uma linha de
+   texto e sem um byte de JavaScript. As setas e a barra de progresso sao um
+   extra que o JS acrescenta por cima; sem JS a faixa percorre-se na mesma com
+   o dedo, com o trackpad e com as setas do teclado.
+
+   A MOLDURA 3:4 MANTEM-SE, e aqui e ainda mais precisa do que na grelha: as
+   12 fotografias so tem dois extremos e nada pelo meio — 0,45 (vertical de
+   telemovel, 8 ficheiros) e 2,23 (corte panoramico herdado do Facebook, 4
+   ficheiros). Numa fila horizontal, proporcoes livres nao dariam so molduras
+   feias: dariam uma faixa que MUDA DE ALTURA a cada peca que passa, e a pagina
+   inteira a saltar por baixo dela. Moldura fixa, `cover` por dentro, e o
+   enquadramento de cada fotografia em style="--pos:x y" no HTML.
+   O que o corte tira nao se perde: a lightbox abre a fotografia inteira. */
+/* A margem de baixo e do carrossel e nao do bloco seguinte: a barra de
+   progresso e o ultimo elemento da faixa e sem ela o "Quer ver o seu espaco
+   assim?" encostava-se-lhe (medido: 36px entre os dois). */
+.carrossel{position:relative;margin-bottom:clamp(1.7rem,4vw,2.6rem)}
+.carrossel__janela{position:relative}
+
+/* --n = quantas pecas cabem no ecra, COM CASA DECIMAL — a parte fraccionaria e
+   a espreitadela. Nao ha "peca a 85% e ponto": a nesga tem de ser larga o
+   suficiente para se ler como fotografia cortada e nao como um risco.
+   Medido a 390px: peca de 317px (81% do ecra) e 44px de nesga; a 320px,
+   253px de peca e 39px de nesga. */
+.carrossel__faixa{
+  --gap:.7rem; --n:1.08;
+  display:grid;grid-auto-flow:column;
+  grid-auto-columns:calc((100% - var(--n) * var(--gap)) / var(--n));
+  gap:var(--gap);
+  /* A faixa sangra ate ao bordo do .container (margem negativa igual ao gutter)
+     e devolve esse espaco como padding POR DENTRO. Assim a primeira peca fica
+     alinhada com o titulo, a ultima respira no fim, e a nesga da direita e
+     cortada pelo bordo do ecra em vez de o ser por uma margem — que e o que faz
+     a faixa parecer continuar para la do ecra.
+     A pagina nao cresce com isto: a faixa tem overflow proprio, por isso o
+     excedente nunca chega ao documento.
+     Assenta em `--gutter` ser exactamente o padding-inline do .container; se um
+     dia o .container levar outro padding nalgum breakpoint, a faixa fica com
+     uma aresta de um lado.
+     O scroll-padding e obrigatorio, nao decorativo: sem ele o primeiro snap
+     alinha a peca 1 com o bordo do ECRA e come o gutter da esquerda. */
+  margin-inline:calc(var(--gutter) * -1);
+  padding-inline:var(--gutter);
+  scroll-padding-inline:var(--gutter);
+  /* folga vertical: sem ela o overflow-y corta a sombra das molduras */
+  padding-block:3px 10px;
+  overflow-x:auto;overflow-y:hidden;
+  scroll-snap-type:x mandatory;
+  scroll-behavior:smooth;
+  /* Trava so o encadeamento HORIZONTAL (nao dispara o "voltar atras" do browser
+     ao chegar ao fim da faixa). O eixo vertical fica em `auto` de proposito: e
+     ele que entrega o deslize para cima/baixo a pagina em vez de o engolir —
+     foi este o defeito que tivemos no comparador Antes & Depois. */
+  overscroll-behavior-x:contain;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
 }
+.carrossel__faixa::-webkit-scrollbar{display:none}
+/* O anel de foco vai para DENTRO (offset negativo): a faixa chega aos bordos do
+   ecra e um anel por fora ficava cortado ao meio, so com as linhas de cima e de
+   baixo visiveis. */
+.carrossel__faixa:focus-visible{outline:3px solid var(--yellow);outline-offset:-3px;border-radius:var(--radius)}
+/* O corte dos 440px nao e um numero redondo: e o telemovel mais largo que
+   existe em retrato (430px). Ate ai a peca ocupa quase o ecra; a partir dai
+   comeca a encolher, senao aos 600px dava uma moldura de 500x667 — mais alta
+   do que a maior parte das janelas. Os passos sao sempre ~1,45x uns dos
+   outros, para nenhuma largura ter um salto maior do que os outros. */
+@media (min-width:440px){.carrossel__faixa{--gap:1rem;--n:1.6}}
+@media (min-width:601px){.carrossel__faixa{--n:2.35}}
+@media (min-width:960px){.carrossel__faixa{--n:3.35}}
+@media (min-width:1200px){.carrossel__faixa{--n:4.3}}
+/* Telemovel deitado: 1,08 pecas dava uma moldura 3:4 mais alta do que o ecra
+   inteiro e nao se via uma fotografia de uma vez. */
+@media (orientation:landscape) and (max-height:520px){.carrossel__faixa{--n:3.35}}
+@media (prefers-reduced-motion:reduce){.carrossel__faixa{scroll-behavior:auto}}
 
-/* ---------------- OBRAS / GALERIA ---------------- *
-   Grelha regular: TODAS as fotografias na mesma moldura 3:4 (retrato).
-   Porque: as 12 originais so tem dois extremos e nada pelo meio — 0,45
-   (vertical de telemovel, 8 ficheiros) e 2,23 (corte panoramico herdado do
-   Facebook, 4 ficheiros). O mosaico por colunas herdava essas proporcoes e
-   punha uma tira altissima ao lado de uma nesga achatada. Aqui a moldura e
-   sempre a mesma e a fotografia entra em `cover`.
-   Escolheu-se retrato (e nao quadrado) porque 8 das 12 ja sao verticais: o
-   3:4 guarda-lhes 60% da altura contra 45% do quadrado, e assenta no formato
-   do proprio telemovel.
-   O que o corte tira nao se perde: a lightbox abre a fotografia inteira
-   (object-fit:contain) — e o texto da seccao diz isso ao visitante.
-
-   COLUNAS: 2 / 3 / 4. Todas dividem 12 e 6 sem sobras, por isso nunca ha
-   ultima linha coxa — nem com os 6 iniciais do data-collapse nem com os 12
-   depois do "Ver mais". Se um dia o numero de fotografias deixar de ser
-   multiplo de 12 e de 6, a ultima linha fica incompleta (nao parte nada). */
-.gallery{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.7rem}
-@media (min-width:601px){.gallery{grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}}
-@media (min-width:960px){.gallery{grid-template-columns:repeat(4,minmax(0,1fr))}}
-
-.gitem{position:relative;margin:0;border-radius:var(--radius);overflow:hidden;cursor:zoom-in;box-shadow:var(--shadow-sm);background:var(--bg-soft);display:block}
+/* scroll-snap-stop fica em `normal` (o valor por omissao) de proposito: com
+   `always` cada deslize so avancaria UMA peca e chegar a decima segunda dava
+   doze gestos. */
+.gitem{position:relative;margin:0;border-radius:var(--radius);overflow:hidden;cursor:zoom-in;box-shadow:var(--shadow-sm);background:var(--bg-soft);display:block;scroll-snap-align:start}
 /* aspect-ratio na propria <img> (e nao na <figure>) reserva a caixa antes de
-   a fotografia carregar: a galeria deixa de empurrar a pagina para baixo
-   quando as imagens chegam (medido: 0px de layout shift em toda a linha). */
-.gitem img{width:100%;height:auto;aspect-ratio:3/4;object-fit:cover;object-position:var(--pos,50% 50%);display:block;transition:transform .6s var(--ease)}
-/* O guarda (hover:hover) e obrigatorio: sem ele o :hover fica agarrado ao
-   tile depois de um toque e a fotografia continua ampliada. */
+   a fotografia carregar: a faixa deixa de mudar de altura quando as imagens
+   chegam.
+   O tecto de altura e para o ecra DEITADO: a 844x390 a moldura 3:4 pedia 288px
+   de altura e a legenda saia por baixo do ecra com a barra de progresso. 70svh
+   corta 15px e faz caber tudo. Em retrato NUNCA chega a pegar (medido: a pior
+   largura, 439px, pede 484px de moldura contra 652px de tecto), e quando pega
+   corta todas as pecas na mesma medida — as molduras continuam iguais entre si,
+   que era a razao de ser da moldura fixa. */
+.gitem img{width:100%;height:auto;aspect-ratio:3/4;object-fit:cover;object-position:var(--pos,50% 50%);display:block;transition:transform .6s var(--ease);
+  max-height:70vh;max-height:70svh}
+/* O guarda (hover:hover) e obrigatorio: sem ele o :hover fica agarrado a peca
+   depois de um toque e a fotografia continua ampliada. */
 @media (hover:hover){.gitem:hover img{transform:scale(1.05)}}
 
-/* ENQUADRAMENTO: vive no HTML, em style="--pos:x y", ao lado do <img> a que
+/* ENQUADRAMENTO: vive no HTML, em style="--pos:x y", ao lado da <img> a que
    pertence. Deliberadamente NAO em selectores por nome de ficheiro: esses
    falham em silencio quando alguem renomeia ou substitui uma fotografia.
-   Fotografia nova entra sem --pos e fica ao centro; se o assunto estiver
-   descentrado, acrescenta-se --pos a essa <figure>. O centro geometrico
-   raramente e o centro do assunto — as 4 panoramicas perdem 66% da largura
-   e as 8 verticais 40% da altura. */
+   Fotografia nova entra sem --pos e fica ao centro. */
 
-/* LEGENDA sempre visivel. Antes so aparecia no :hover, ou seja NUNCA no
-   telemovel — e o cliente ve o site no telemovel. Fica sobreposta dentro da
-   moldura 3:4, por isso custa ZERO pixels de altura a seccao.
+/* LEGENDA sempre visivel — no telemovel nao ha hover. Fica sobreposta dentro
+   da moldura, por isso custa ZERO pixels de altura a faixa.
    O veu e de alfa FIXO (nao um degrade por baixo do texto): assim o contraste
-   nao depende da fotografia nem do numero de linhas da legenda. Branco sobre
+   nao depende da fotografia nem do numero de linhas. Branco sobre
    rgba(22,35,58,.9) — o token --ink — da 11,6:1 no pior caso possivel (uma
-   fotografia 100% branca). AA pede 4,5:1. Escolheu-se --ink e nao --navy
-   porque o azul saturado lia-se como um autocolante colado sobre as
-   fotografias claras; o --ink le-se como sombra.
+   fotografia 100% branca por baixo). AA pede 4,5:1.
    O esbatimento por cima e uma curva acelerada (quase nada no topo) para nao
    deixar aresta visivel — um degrade linear cria uma banda de Mach no inicio.
    `pointer-events:none` deixa o toque atravessar para a imagem e abrir a
    lightbox. */
 .gitem figcaption{position:absolute;left:0;right:0;bottom:0;padding:.42rem .5rem .48rem;color:#fff;font-family:var(--font-head);font-weight:600;font-size:.77rem;line-height:1.25;background:rgba(22,35,58,.9);text-shadow:0 1px 3px rgba(22,35,58,.6);pointer-events:none}
 .gitem figcaption::before{content:"";position:absolute;left:0;right:0;bottom:100%;height:2.4rem;background:linear-gradient(180deg,rgba(22,35,58,0) 0%,rgba(22,35,58,.06) 30%,rgba(22,35,58,.18) 50%,rgba(22,35,58,.40) 68%,rgba(22,35,58,.66) 84%,rgba(22,35,58,.9) 100%)}
-/* A legenda so cresce aos 760px. O corte a 601px e o da GRELHA (3 colunas),
-   e a 601px uma coluna de 3 e tao estreita como uma de 2 num telemovel:
-   subir ali a fonte punha quatro legendas a partir em duas linhas. */
-@media (min-width:760px){.gitem figcaption{padding:.55rem .8rem .6rem;font-size:.9rem}}
+/* A legenda cresce aos 521px e nao aos 760px da grelha antiga: na faixa a peca
+   a 521px ja tem 287px de largura (contra 165px que a grelha de 3 colunas dava
+   a essa largura), e a legenda mais comprida — "Revestimento tipo marmore" —
+   mede 173px a .9rem. Cabe numa linha em toda a gama a partir daqui; medido em
+   521, 601, 768 e 960px, sempre uma linha. */
+@media (min-width:521px){.gitem figcaption{padding:.55rem .8rem .6rem;font-size:.9rem}}
 
 @media (prefers-reduced-motion:reduce){.gitem img{transition:none}.gitem:hover img{transform:none}}
 
-/* ---------------- VER MAIS (mobile) ---------------- */
-.more-wrap{margin-top:1.5rem;display:flex;justify-content:center}
-.more-btn{min-width:210px}
+/* SETAS. `display:none` na base e a regra de hover a reactiva-las: assim o
+   atributo `hidden` do HTML continua a mandar (o atributo nao esconde nada
+   quando o CSS declara um display) e num ecra tactil nunca aparecem — quem tem
+   dedo tem o gesto, e duas bolas brancas por cima das fotografias so tapavam
+   obra. 46px de alvo (>=44px). */
+.carrossel__seta{
+  display:none;position:absolute;z-index:2;
+  top:calc(50% - 4px);transform:translateY(-50%);
+  width:46px;height:46px;padding:0;border:0;border-radius:50%;
+  align-items:center;justify-content:center;cursor:pointer;
+  background:rgba(255,255,255,.95);color:var(--navy);
+  box-shadow:0 8px 22px -8px rgba(8,53,107,.6),0 0 0 1px rgba(8,53,107,.12);
+  transition:opacity var(--t),background var(--t),color var(--t);
+}
+@media (hover:hover){.carrossel__seta:not([hidden]){display:flex}}
+.carrossel__seta svg{width:22px;height:22px}
+.carrossel__seta--prev{inset-inline-start:8px}
+.carrossel__seta--next{inset-inline-end:8px}
+@media (hover:hover){.carrossel__seta:hover{background:#fff;color:var(--blue)}}
+/* No inicio e no fim a seta correspondente desaparece em vez de ficar la a
+   nao fazer nada. `disabled` — e nao aria-disabled — porque ela desaparece
+   MESMO (opacity:0): um botao invisivel que continuasse na ordem de tabulacao
+   dava uma paragem de Tab sem nada para ver, que e a falha 2.4.7. Com
+   `disabled` sai da ordem de tabulacao ao mesmo tempo que sai da vista. */
+.carrossel__seta[disabled]{opacity:0;pointer-events:none}
+@media (prefers-reduced-motion:reduce){.carrossel__seta{transition:none}}
+
+/* BARRA DE PROGRESSO em vez de pontos: com 12 fotografias, doze pontinhos sao
+   ruido visual e alvos de toque pequenos de mais. A barra diz duas coisas ao
+   mesmo tempo — onde vamos e QUANTO FALTA — e nao cresce com o numero de
+   fotografias. Azul --blue sobre --line-2: 4,97:1, acima dos 3:1 que a WCAG
+   pede a um elemento nao textual. */
+.carrossel__barra{position:relative;height:4px;width:min(260px,52%);margin:1.15rem auto 0;border-radius:var(--radius-pill);background:var(--line-2);overflow:hidden}
+.carrossel__barra[hidden]{display:none}
+.carrossel__polegar{position:absolute;inset-block:0;left:0;width:30%;border-radius:inherit;background:var(--blue);transition:transform .15s linear,width .2s ease}
+@media (prefers-reduced-motion:reduce){.carrossel__polegar{transition:none}}
+
+/* A chamada final estava alinhada a esquerda por baixo de uma seccao centrada —
+   nao tinha uma unica regra em lado nenhum do site. */
+.obras__cta{display:flex;flex-direction:column;align-items:center;gap:.9rem;text-align:center}
+
+
+/* ============================================================
+   BLOCO SEPARADO — NAO E DO CARROSSEL. Vai no fim do styles.css.
+   Se outra sessao ja tiver escrito CSS para a lightbox, deitem este fora.
+   ============================================================ */
+
+/* ---------------- LIGHTBOX ---------------- *
+   NAO E DO CARROSSEL: a marcacao (#lightbox) e o JS que a abre ja existiam, mas
+   nao havia UMA regra de CSS para eles em lado nenhum — nem no ficheiro de
+   trabalho nem no HEAD do git. Sem isto a "lightbox" e um bloco sem estilo no
+   fim do documento, sempre visivel, com a fotografia esticada (object-fit
+   computa `fill`) — ou seja, a promessa "clique para ver a fotografia inteira",
+   que e o que justifica cortar as 12 fotografias em 3:4, nao se cumpre nem hoje
+   com a grelha nem amanha com o carrossel.
+   Fecha-se com `[hidden]`? Nao: o JS nao mexe no atributo hidden, so na classe
+   .is-open e no aria-hidden. Por isso e a classe que manda aqui. */
+.lightbox{
+  position:fixed;inset:0;z-index:200;/* acima do menu (130) e do banner (180) */
+  display:flex;align-items:center;justify-content:center;
+  padding:clamp(.8rem,3vw,2rem);
+  background:rgba(8,36,64,.94);
+  opacity:0;visibility:hidden;transition:opacity var(--t),visibility var(--t);
+}
+.lightbox.is-open{opacity:1;visibility:visible}
+@media (prefers-reduced-motion:reduce){.lightbox{transition:none}}
+/* A figura nao pode crescer alem do ecra: e o `min-height:0` que deixa a <img>
+   encolher dentro dela (sem ele um flex item nao desce abaixo do seu conteudo e
+   a fotografia saia por baixo). */
+.lightbox__figure{margin:0;max-width:100%;max-height:100%;display:flex;flex-direction:column;align-items:center;gap:.7rem;min-height:0}
+/* `contain` e o contrato desta janela: aqui ve-se a fotografia INTEIRA, com as
+   proporcoes dela, seja panoramica ou vertical. */
+.lightbox__img{max-width:100%;max-height:100%;min-height:0;object-fit:contain;border-radius:var(--radius);background:var(--navy-900)}
+.lightbox__cap{flex:none;color:#fff;font-family:var(--font-head);font-weight:600;font-size:.95rem;text-align:center}
+/* 52px de alvo. O fundo dos botoes e ESCURO e nao claro: eles ficam por cima da
+   fotografia (num ecra largo o `contain` deixa-a chegar aos lados) e um branco a
+   14% sobre uma cozinha branca dava um icone que praticamente desaparecia.
+   Branco sobre rgba(10,36,64,.82) por cima da fotografia mais clara possivel
+   (100% branca) = 8,98:1; sobre o veu escuro da propria lightbox, 16,1:1. */
+.lightbox__btn{
+  position:absolute;z-index:2;width:52px;height:52px;padding:0;border:0;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;
+  background:rgba(10,36,64,.82);color:#fff;
+  transition:background var(--t-fast),color var(--t-fast);
+}
+.lightbox__btn svg{width:26px;height:26px}
+@media (hover:hover){.lightbox__btn:hover{background:#fff;color:var(--navy)}}
+.lightbox__btn--close{top:max(.6rem,env(safe-area-inset-top));inset-inline-end:.6rem}
+.lightbox__btn--prev{inset-inline-start:.4rem;top:50%;transform:translateY(-50%)}
+.lightbox__btn--next{inset-inline-end:.4rem;top:50%;transform:translateY(-50%)}
+/* Em ecra estreito as setas descem para uma fila POR BAIXO. Se ficassem nos
+   lados, tinham de ser descontados 120px de largura a fotografia — e as quatro
+   panoramicas, que ja perdem 66% da largura na moldura da faixa, abriam com
+   118px de altura. Medido a 390px: a panoramica passou de 262x118 para 364x164
+   e a vertical de 262x581 para 324x717. */
+@media (max-width:600px){
+  .lightbox{padding-block-end:78px}
+  .lightbox__btn--prev,.lightbox__btn--next{top:auto;bottom:13px;transform:none}
+  .lightbox__btn--prev{inset-inline-start:calc(50% - 62px)}
+  .lightbox__btn--next{inset-inline-end:calc(50% - 62px)}
+}
+
+/* ---------------- OBRAS · CTA ---------------- */
+/* Perdido no mesmo recorte que levou a lightbox: sem isto o «Quer ver o seu
+   espaco assim?» ficava encostado a esquerda por baixo de uma seccao
+   centrada. */
+.obras__cta{margin-top:2.4rem;display:flex;flex-direction:column;align-items:center;gap:.9rem;text-align:center}
+.obras__cta p{font-family:var(--font-head);font-weight:600;font-size:1.15rem;color:var(--ink)}
 
 /* ---------------- CONTACTO ---------------- */
 .contact__grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(1.6rem,4vw,2.6rem);align-items:stretch;margin-top:.5rem}
