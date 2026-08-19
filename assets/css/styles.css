@@ -279,6 +279,40 @@ body.menu-open{overflow:hidden}
 @media (pointer:coarse){.ba__range{pointer-events:none}}
 .ba__cap{padding:.9rem 1.1rem;font-family:var(--font-head);font-weight:600;color:var(--ink)}
 
+/* ---------------- LIGHTBOX ---------------- */
+/* Este bloco ja se perdeu uma vez: o recorte que substituiu o CSS da
+   galeria recuou ate ao comentario anterior e levou-o a frente. Sem ele
+   a lightbox fica sem position, sem fundo e sem visibility — o clique
+   acrescentava a classe .is-open e nao acontecia nada visivel, que foi
+   exactamente o «nao da para clicar na imagem» que o cliente descreveu.
+   Quem mexer no CSS da galeria: este bloco vive AO LADO e nao faz parte
+   dela. */
+.lightbox{position:fixed;inset:0;z-index:200;background:rgba(6,20,40,.94);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.8rem;padding:clamp(14px,5vw,48px);opacity:0;visibility:hidden;transition:opacity .26s}
+.lightbox.is-open{opacity:1;visibility:visible}
+.lightbox__figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:.7rem;max-width:100%;min-height:0}
+.lightbox__img{max-width:100%;max-height:74vh;border-radius:10px;box-shadow:var(--shadow);background:#fff;object-fit:contain}
+/* A legenda era position:absolute dentro da <figure>: caía POR CIMA da
+   fotografia, a branco sobre a imagem, com 2,8:1 de contraste. Agora fica por
+   baixo, sobre o fundo escuro, onde se lê. */
+.lightbox__cap{text-align:center;color:#fff;font-family:var(--font-head);font-weight:600;max-width:56ch}
+/* z-index: os botões «Fechar» e «Anterior» vêm ANTES da <figure> no DOM e
+   nenhum declarava z-index, por isso a fotografia pintava por cima deles — a
+   320px tapava 44 dos 52px do «Anterior» e o toque caía na imagem. */
+.lightbox__btn{position:absolute;z-index:2;background:rgba(255,255,255,.14);color:#fff;border-radius:50%;width:52px;height:52px;display:flex;align-items:center;justify-content:center;line-height:1;border:1px solid rgba(255,255,255,.25)}
+.lightbox__btn:hover{background:rgba(255,255,255,.3)}
+.lightbox__btn svg{width:24px;height:24px;pointer-events:none}
+.lightbox__btn--close{top:14px;right:14px}
+.lightbox__btn--prev{left:16px;top:50%;transform:translateY(-50%)}
+.lightbox__btn--next{right:16px;top:50%;transform:translateY(-50%)}
+@media (max-width:780px){
+  /* Num telemóvel não há folga lateral para as setas: aterravam em cima da
+     fotografia. Descem para uma barra ao centro, ao alcance do polegar. */
+  .lightbox{padding-top:78px;padding-bottom:86px}
+  .lightbox__img{max-height:60vh}
+  .lightbox__btn--prev{left:50%;top:auto;bottom:18px;transform:translateX(calc(-100% - .45rem))}
+  .lightbox__btn--next{right:50%;top:auto;bottom:18px;transform:translateX(calc(100% + .45rem))}
+}
+
 /* ---------------- OBRAS / GALERIA ---------------- *
    Grelha regular: TODAS as fotografias na mesma moldura 3:4 (retrato).
    Porque: as 12 originais so tem dois extremos e nada pelo meio — 0,45
