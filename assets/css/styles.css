@@ -5,20 +5,9 @@
 /* ---------------- HEADER / NAVBAR (azul-marinho, logo amarelo) ---------------- */
 .site-header{
   position:fixed;top:0;left:0;right:0;z-index:100;
-  /* No topo da pagina o cabecalho e uma sombra, nao uma barra: a fotografia do
-     hero corre ate ao bordo superior do ecra em vez de comecar por baixo de uma
-     faixa azul de 73px. O gradiente escurece so o suficiente para o logotipo e
-     o menu se lerem por cima da fotografia (medido no pior pixel: menu 7,1:1, CTA 8,5:1, tagline 6,4:1) e apaga-se
-     antes de chegar ao fim da barra, para nao voltar a ser uma faixa. */
-  background:linear-gradient(180deg,rgba(8,36,64,.88) 0%,rgba(8,36,64,.72) 45%,rgba(8,36,64,.45) 100%);
-  border-bottom:1px solid transparent;
-  transition:background var(--t),box-shadow var(--t),border-color var(--t),backdrop-filter var(--t);
-}
-/* Assim que se rola, volta a ser barra opaca — dai para baixo o fundo e branco
-   e o cabecalho precisa de corpo proprio. */
-.site-header.is-scrolled{
+  background:linear-gradient(160deg,rgba(11,74,147,.92),rgba(10,36,64,.95));
   -webkit-backdrop-filter:saturate(160%) blur(12px);backdrop-filter:saturate(160%) blur(12px);
-  border-bottom-color:rgba(255,255,255,.08);
+  border-bottom:1px solid rgba(255,255,255,.08);transition:background var(--t),box-shadow var(--t),border-color var(--t);
 }
 .site-header.is-scrolled{background:linear-gradient(160deg,rgba(9,64,130,.97),rgba(8,30,55,.985));box-shadow:0 10px 30px -18px rgba(0,0,0,.6)}
 .nav{display:flex;align-items:center;gap:1.1rem;padding-block:12px;transition:padding var(--t)}
@@ -96,11 +85,16 @@ body.menu-open{overflow:hidden}
   min-height:430px;
   min-height:min(69vh,600px);
   min-height:min(69svh,600px);
-  /* Mede-se pelo cabeçalho encolhido (73px reais) e não pelos 92px do token: o
-     cabeçalho assenta POR CIMA da fotografia e só precisa de não tapar o texto.
+  /* A fotografia COMEÇA onde o cabeçalho acaba: nada dela fica escondido por
+     baixo da barra. O --header-real é medido em JS (o cabeçalho é fixo e a sua
+     altura depende do conteúdo e da largura), com os 92px do token como valor
+     de recurso enquanto o JS não corre. É margem e não padding, porque o padding
+     ficaria DENTRO da secção e a fotografia, que é absoluta a inset:0, voltaria
+     a passar por trás da barra.
      O padding de baixo é do bloco de texto, não do hero — a sombra tem de poder
      chegar ao bordo inferior da secção. */
-  padding-top:calc(var(--header-h-min) + 1.4rem);
+  margin-top:var(--header-real,var(--header-h));
+  padding-top:1.4rem;
   padding-bottom:0;
   background:var(--navy-900); /* pinta enquanto a fotografia não chega */
   color:#fff;

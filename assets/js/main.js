@@ -9,6 +9,24 @@
 
   /* ---------- Header: encolher no scroll (logo grande ↔ pequeno) ---------- */
   var header = doc.querySelector('[data-header]');
+  /* A altura REAL do cabecalho por rolar, escrita em --header-real para o hero
+     comecar exactamente onde ele acaba. Nao se pode fixar em CSS: a barra muda
+     de altura com a largura do ecra (o lockup do logotipo encolhe abaixo dos
+     920px) e com o tamanho de letra do sistema. Medida so no estado NAO rolado
+     — se seguisse o estado encolhido, o hero saltava 26px ao primeiro scroll. */
+  if (header) {
+    var medirCab = function () {
+      var eraScrolled = header.classList.contains('is-scrolled');
+      if (eraScrolled) header.classList.remove('is-scrolled');
+      var h = Math.round(header.getBoundingClientRect().height);
+      if (eraScrolled) header.classList.add('is-scrolled');
+      doc.documentElement.style.setProperty('--header-real', h + 'px');
+    };
+    medirCab();
+    window.addEventListener('load', medirCab);
+    if (doc.fonts && doc.fonts.ready && doc.fonts.ready.then) doc.fonts.ready.then(medirCab);
+    var rc; window.addEventListener('resize', function () { clearTimeout(rc); rc = setTimeout(medirCab, 150); }, { passive: true });
+  }
   if (header) {
     var scrolled = false, ticking = false;
     var onScroll = function () {
