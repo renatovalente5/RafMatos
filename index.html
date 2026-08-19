@@ -48,7 +48,11 @@
   <link rel="preload" as="font" type="font/woff2" href="assets/fonts/inter-var.woff2" crossorigin />
   <link rel="stylesheet" href="assets/css/fonts.css?v=be308d42" />
   <link rel="stylesheet" href="assets/css/base.css?v=c4ff5a0f" />
-  <link rel="stylesheet" href="assets/css/styles.css?v=023c9e93" />
+  <link rel="stylesheet" href="assets/css/styles.css?v=b8f942b4" />
+  <!-- Sem JavaScript ninguem acrescenta .is-in e tudo o que tem data-reveal
+       fica em opacity:0 — os titulos, os textos e os botoes. Uma linha repoe
+       a pagina inteira. -->
+  <noscript><style>[data-reveal]{opacity:1;transform:none}</style></noscript>
 </head>
 <body>
   <a class="skip-link" href="#conteudo">Saltar para o conteúdo</a>
@@ -321,13 +325,6 @@
       </div>
     </section>
 
---- E MAIS UMA LINHA NO <head>, imediatamente antes de </head> ---
-
-  <!-- Sem JavaScript ninguem acrescenta .is-in e tudo o que tem data-reveal
-       fica em opacity:0 — o titulo das seccoes, os textos e os botoes. Uma
-       linha repoe a pagina inteira; a faixa de obras nem sequer leva o
-       atributo, para nao depender disto. -->
-  <noscript><style>[data-reveal]{opacity:1;transform:none}</style></noscript>
         <!-- ================= CONTACTO ================= -->
     <section id="contacto" class="section">
       <div class="container">

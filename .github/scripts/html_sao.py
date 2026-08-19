@@ -53,6 +53,48 @@ def verifica(caminho):
     for m in re.finditer(r'\]\]>', s):
         erros.append(']]> na linha %d — sobra de um bloco CDATA colado' % (s[:m.start()].count('\n') + 1))
 
+    # --- texto solto a margem esquerda do <body> ---
+    # Terceiro incidente da mesma familia: um bloco colado trazia, a seguir ao
+    # </section>, uma linha de instrucoes para mim («--- E MAIS UMA LINHA NO
+    # <head> ---»). Colei-a com o resto e ficou a LER-SE na pagina publicada,
+    # entre a galeria e os contactos. O parser nao se queixa: e texto valido.
+    #
+    # Regra: dentro do <body>, uma linha que comeca na margem esquerda sem ser
+    # por uma tag e prosa que nao devia estar ali — em HTML bem formado o texto
+    # vive dentro de um elemento, e portanto indentado.
+    #
+    # A varredura e linha a linha com estado, e NAO por regex de limpeza: a
+    # primeira versao usava re.sub para tirar script/style/svg antes de olhar, e
+    # um <svg> a montante engolia a linha suspeita — o guarda dava «ok» sobre o
+    # proprio ficheiro que tinha o defeito.
+    dentro_bloco = 0
+    dentro_comentario = False
+    linhas = s[s.find('<body'):].split('\n') if '<body' in s else []
+    for linha in linhas:
+        crua = linha
+        if dentro_comentario:
+            if '-->' in crua:
+                dentro_comentario = False
+                crua = crua.split('-->', 1)[1]
+            else:
+                continue
+        while '<!--' in crua:
+            antes, resto = crua.split('<!--', 1)
+            if '-->' in resto:
+                crua = antes + resto.split('-->', 1)[1]
+            else:
+                crua = antes
+                dentro_comentario = True
+                break
+        baixo = crua.lower()
+        for t in ('script', 'style', 'noscript', 'textarea', 'pre', 'svg'):
+            dentro_bloco += baixo.count('<' + t) - baixo.count('</' + t)
+        if dentro_bloco > 0 or not crua.strip():
+            continue
+        if crua[:1] in ' \t' or crua.startswith('<'):
+            continue
+        erros.append('texto solto a margem esquerda do body: «%s»' % crua.strip()[:70])
+
     # --- <section> equilibradas e ancoras vivas ---
     ab, fe = len(re.findall(r'<section\b', s)), len(re.findall(r'</section>', s))
     if ab != fe:
