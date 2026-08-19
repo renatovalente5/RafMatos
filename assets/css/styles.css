@@ -5,9 +5,20 @@
 /* ---------------- HEADER / NAVBAR (azul-marinho, logo amarelo) ---------------- */
 .site-header{
   position:fixed;top:0;left:0;right:0;z-index:100;
-  background:linear-gradient(160deg,rgba(11,74,147,.92),rgba(10,36,64,.95));
+  /* No topo da pagina o cabecalho e uma sombra, nao uma barra: a fotografia do
+     hero corre ate ao bordo superior do ecra em vez de comecar por baixo de uma
+     faixa azul de 73px. O gradiente escurece so o suficiente para o logotipo e
+     o menu se lerem por cima da fotografia (medido no pior pixel: menu 7,1:1, CTA 8,5:1, tagline 6,4:1) e apaga-se
+     antes de chegar ao fim da barra, para nao voltar a ser uma faixa. */
+  background:linear-gradient(180deg,rgba(8,36,64,.88) 0%,rgba(8,36,64,.72) 45%,rgba(8,36,64,.45) 100%);
+  border-bottom:1px solid transparent;
+  transition:background var(--t),box-shadow var(--t),border-color var(--t),backdrop-filter var(--t);
+}
+/* Assim que se rola, volta a ser barra opaca — dai para baixo o fundo e branco
+   e o cabecalho precisa de corpo proprio. */
+.site-header.is-scrolled{
   -webkit-backdrop-filter:saturate(160%) blur(12px);backdrop-filter:saturate(160%) blur(12px);
-  border-bottom:1px solid rgba(255,255,255,.08);transition:background var(--t),box-shadow var(--t),border-color var(--t);
+  border-bottom-color:rgba(255,255,255,.08);
 }
 .site-header.is-scrolled{background:linear-gradient(160deg,rgba(9,64,130,.97),rgba(8,30,55,.985));box-shadow:0 10px 30px -18px rgba(0,0,0,.6)}
 .nav{display:flex;align-items:center;gap:1.1rem;padding-block:12px;transition:padding var(--t)}
