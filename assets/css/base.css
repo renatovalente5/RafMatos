@@ -25,8 +25,13 @@
   --blue:#1B4C82;        /* ligações e ícones sobre claro — 8,7:1 s/ branco */
   --blue-600:#143C68;
   --blue-050:#EDF2F9;
-  --navy:#0C2644;        /* o campo do logótipo */
-  --navy-900:#061627;    /* o tom da vinheta, para o fundo dos degradés */
+  --navy:#041832;        /* o campo do logótipo, medido ao nível das letras.
+                            É de propósito que a navbar e o rodapé usam este
+                            valor exacto e sem degradé: o azul que fica DENTRO
+                            do logótipo — painéis e parede da casa — é o mesmo,
+                            e assim a marca continua na barra em vez de se ver
+                            uma mancha escura à volta dela. */
+  --navy-900:#02152B;    /* o tom mais fundo da arte, abaixo dos ícones */
   --gold:#D9A441;        /* o dourado da marca — 6,8:1 sobre o marinho */
   --gold-600:#C9922B;
   --gold-ink:#8D6625;    /* dourado escuro, para texto dourado sobre claro */
@@ -45,7 +50,10 @@
   --line-2:#CFD7E3;
 
   /* ---- Gradientes ---- */
-  --grad-navy:linear-gradient(160deg,#12314F 0%,#0C2644 55%,#061627 100%);
+  /* Sem degradé nas superfícies que levam o logótipo — qualquer variação de
+     tom faz aparecer o contorno do azul de dentro da marca. O relevo vem da
+     sombra e da linha de baixo, não da cor. */
+  --grad-navy:#041832;
   --grad-blue:linear-gradient(135deg,#245C99 0%,#1B4C82 100%);
 
   /* ---- Tipografia ---- */

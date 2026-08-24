@@ -5,11 +5,14 @@
 /* ---------------- HEADER / NAVBAR (azul-marinho, logo amarelo) ---------------- */
 .site-header{
   position:fixed;top:0;left:0;right:0;z-index:100;
-  background:linear-gradient(160deg,rgba(18,49,79,.92),rgba(6,22,39,.95));
-  -webkit-backdrop-filter:saturate(160%) blur(12px);backdrop-filter:saturate(160%) blur(12px);
+  /* Opaca, e não a 94 %. Com translucidez a barra clareia por cima da
+     fotografia do hero e deixa de bater certo com o azul opaco que está dentro
+     do logótipo — os painéis solares voltavam a ler-se como manchas escuras.
+     Sem transparência, o desfoque por trás também deixa de ter função. */
+  background:#041832;
   border-bottom:1px solid rgba(255,255,255,.08);transition:background var(--t),box-shadow var(--t),border-color var(--t);
 }
-.site-header.is-scrolled{background:linear-gradient(160deg,rgba(20,60,104,.97),rgba(6,22,39,.985));box-shadow:0 10px 30px -18px rgba(0,0,0,.6)}
+.site-header.is-scrolled{background:#041832;box-shadow:0 10px 30px -18px rgba(0,0,0,.6)}
 .nav{display:flex;align-items:center;gap:1.1rem;padding-block:12px;transition:padding var(--t)}
 .site-header.is-scrolled .nav{padding-block:7px}
 
@@ -631,7 +634,7 @@ body.tem-banner .footer__bar{padding-bottom:calc(1.3rem + var(--banner-h, clamp(
 @media (max-width:520px){.cookie__actions{width:100%}.cookie__actions .btn{flex:1;padding-inline:.7em}}
 
 /* ---------------- PÁGINAS LEGAIS ---------------- */
-.legalhead{position:sticky;top:0;z-index:50;background:linear-gradient(160deg,#12314F,#061627);border-bottom:1px solid rgba(255,255,255,.1)}
+.legalhead{position:sticky;top:0;z-index:50;background:#041832;border-bottom:1px solid rgba(255,255,255,.1)}
 .legalhead .container{display:flex;align-items:center;justify-content:space-between;padding-block:10px;gap:1rem}
 .legalhead .nav__brand{display:inline-flex;align-items:center;gap:.6rem;min-width:0}
 .legalhead .nav__mark{height:42px;width:auto}
