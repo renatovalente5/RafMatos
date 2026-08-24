@@ -5,11 +5,11 @@
 /* ---------------- HEADER / NAVBAR (azul-marinho, logo amarelo) ---------------- */
 .site-header{
   position:fixed;top:0;left:0;right:0;z-index:100;
-  background:linear-gradient(160deg,rgba(11,74,147,.92),rgba(10,36,64,.95));
+  background:linear-gradient(160deg,rgba(18,49,79,.92),rgba(6,22,39,.95));
   -webkit-backdrop-filter:saturate(160%) blur(12px);backdrop-filter:saturate(160%) blur(12px);
   border-bottom:1px solid rgba(255,255,255,.08);transition:background var(--t),box-shadow var(--t),border-color var(--t);
 }
-.site-header.is-scrolled{background:linear-gradient(160deg,rgba(9,64,130,.97),rgba(8,30,55,.985));box-shadow:0 10px 30px -18px rgba(0,0,0,.6)}
+.site-header.is-scrolled{background:linear-gradient(160deg,rgba(20,60,104,.97),rgba(6,22,39,.985));box-shadow:0 10px 30px -18px rgba(0,0,0,.6)}
 .nav{display:flex;align-items:center;gap:1.1rem;padding-block:12px;transition:padding var(--t)}
 .site-header.is-scrolled .nav{padding-block:7px}
 
@@ -26,21 +26,21 @@
 .nav__spacer{flex:1}
 .nav__links{display:flex;align-items:center;gap:.1rem}
 .nav__links a{display:inline-block;font-family:var(--font-head);font-weight:600;font-size:1rem;color:#DCE6F2;padding:.5em .8em;border-radius:8px;position:relative;transition:color var(--t-fast)}
-.nav__links a::after{content:"";position:absolute;left:.8em;right:.8em;bottom:.28em;height:3px;border-radius:2px;background:var(--yellow);transform:scaleX(0);transform-origin:left;transition:transform var(--t)}
+.nav__links a::after{content:"";position:absolute;left:.8em;right:.8em;bottom:.28em;height:3px;border-radius:2px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform var(--t)}
 .nav__links a:hover{color:#fff}
 .nav__links a.is-current{color:#fff}
 .nav__links a:hover::after,.nav__links a.is-current::after{transform:scaleX(1)}
 .nav__actions{display:flex;align-items:center;gap:.6rem}
 
 .nav__toggle{display:none;width:48px;height:48px;border-radius:10px;border:1.5px solid rgba(255,255,255,.28);align-items:center;justify-content:center;background:rgba(255,255,255,.06)}
-.nav__toggle:hover{border-color:var(--yellow)}
+.nav__toggle:hover{border-color:var(--gold)}
 .nav__burger,.nav__burger::before,.nav__burger::after{content:"";display:block;width:22px;height:2.6px;border-radius:2px;background:#fff;transition:transform var(--t),opacity var(--t-fast)}
 .nav__burger{position:relative}.nav__burger::before{position:absolute;top:-7px}.nav__burger::after{position:absolute;top:7px}
 
 /* ---------------- MENU MOBILE (ECRÃ INTEIRO) ---------------- */
 .mobile-menu{position:fixed;inset:0;z-index:130;background:var(--grad-navy);color:#fff;overflow:hidden auto;opacity:0;visibility:hidden;transform:translateY(-8px);transition:opacity .32s var(--ease),transform .38s var(--ease),visibility .32s}
 .mobile-menu.is-open{opacity:1;visibility:visible;transform:none}
-.mobile-menu::before{content:"";position:absolute;top:0;left:0;right:0;height:6px;background:var(--yellow)}
+.mobile-menu::before{content:"";position:absolute;top:0;left:0;right:0;height:6px;background:var(--gold)}
 .mobile-menu__inner{position:relative;z-index:2;min-height:100%;display:flex;flex-direction:column;gap:1.2rem;padding:20px var(--gutter) calc(28px + env(safe-area-inset-bottom));max-width:640px;margin-inline:auto}
 .mobile-menu__top{display:flex;align-items:center;justify-content:space-between;color:#fff}
 .mobile-menu__top .nav__word-img{height:24px;width:auto}
@@ -49,8 +49,8 @@
 .mobile-menu__nav{margin-top:.5rem}
 .mobile-menu__nav ul{display:flex;flex-direction:column;list-style:none;padding:0;margin:0}
 .mobile-menu__nav a{display:flex;align-items:baseline;gap:.9rem;font-family:var(--font-head);font-weight:700;font-size:clamp(1.6rem,7vw,2.2rem);color:#fff;padding:.42em 0;border-bottom:1px solid rgba(255,255,255,.12)}
-.mobile-menu__nav a span{font-size:.8rem;color:var(--yellow);font-weight:700;min-width:2ch}
-.mobile-menu__nav a:hover{color:var(--yellow)}
+.mobile-menu__nav a span{font-size:.8rem;color:var(--gold);font-weight:700;min-width:2ch}
+.mobile-menu__nav a:hover{color:var(--gold)}
 .mobile-menu__footer{margin-top:auto;display:flex;flex-direction:column;gap:1rem;padding-top:1.4rem}
 .mobile-menu__contact{display:flex;flex-direction:column;gap:.3rem;color:#C7D5E8}
 .mobile-menu__contact a{color:#C7D5E8}.mobile-menu__contact a:hover{color:#fff}
@@ -66,7 +66,29 @@ body.menu-open{overflow:hidden}
   .nav__word-img{height:21px}
   .site-header.is-scrolled .nav__mark{height:38px}
 }
-@media (max-width:420px){ .nav__word small{display:none} }
+/* O nome novo é 23% mais largo que o antigo — a mesma altura dá 8,2 de
+   proporção em vez de 6,7. A 360 px isso empurrava o botão do menu para fora do
+   ecrã (media: acabava a 362 num espaço de 345) e nas páginas legais fazia a
+   página ganhar barra horizontal. Aqui a marca encolhe o suficiente para caber
+   outra vez, com folga. */
+@media (max-width:420px){
+  .nav__word small{display:none}
+  .nav__mark{height:38px}
+  .nav__word-img{height:17px}
+  .site-header.is-scrolled .nav__mark{height:34px}
+  .site-header.is-scrolled .nav__word-img{height:15px}
+}
+/* Ecrãs de 320 px ainda existem. Aqui a marca inteira mais o botão do menu
+   davam 278 px num espaço de 269, e o botão ficava cortado pela margem. */
+@media (max-width:360px){
+  .nav__mark{height:34px}
+  .nav__word-img{height:15px}
+}
+/* No cabeçalho das páginas legais não há espaço para o nome ao lado do botão
+   «Voltar ao site». Fica a marca, que já liga à entrada. */
+@media (max-width:560px){
+  .legalhead .nav__word-img{display:none}
+}
 
 /* ---------------- HERO ---------------- */
 /* Uma fotografia a ocupar o topo inteiro, o H1 e uma acção. Mais nada.
@@ -140,12 +162,12 @@ body.menu-open{overflow:hidden}
 /* A mesma régua amarela de 3px que abre a lista de serviços: costura o hero à
    secção seguinte e põe a marca no topo sem gastar uma palavra. */
 .hero__copy::before{content:"";display:block;width:56px;height:3px;border-radius:2px;
-  background:var(--yellow);margin-bottom:clamp(.85rem,2vw,1.2rem)}
+  background:var(--gold);margin-bottom:clamp(.85rem,2vw,1.2rem)}
 .hero__title{
   font-size:clamp(2.15rem,1.05rem + 3.4vw,3.6rem);line-height:1.04;letter-spacing:-.015em;
   color:#fff;text-wrap:balance;overflow-wrap:break-word;
 }
-.hero__title .hl{color:var(--yellow)}
+.hero__title .hl{color:var(--gold)}
 .hero__actions{display:flex;flex-wrap:wrap;align-items:center;gap:.8rem 1.5rem;
   margin-top:clamp(1.25rem,2.6vw,1.8rem)}
 /* O telefone e a nota do custo da chamada só existem no computador — a razão
@@ -187,8 +209,8 @@ body.menu-open{overflow:hidden}
   .hero__tel{display:inline-flex;align-items:center;gap:.5em;min-height:48px;padding-inline:2px;
     font-family:var(--font-head);font-weight:700;font-size:1.12rem;color:#fff;
     text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:.42em;
-    text-decoration-color:rgba(242,181,10,.95);transition:text-decoration-color var(--t-fast)}
-  .hero__tel svg{width:1.05em;height:1.05em;flex:none;color:var(--yellow)}
+    text-decoration-color:rgba(217,164,65,.95);transition:text-decoration-color var(--t-fast)}
+  .hero__tel svg{width:1.05em;height:1.05em;flex:none;color:var(--gold)}
   .hero__tel:hover{text-decoration-color:#fff}
   /* O .call-note global vive a opacity .72; sobre fotografia isso deixaria os
      12,5px abaixo do AA. Fixo a cor e devolvo a opacidade a 1. */
@@ -240,7 +262,7 @@ body.menu-open{overflow:hidden}
 .section.services{padding-block:clamp(2.4rem,5.5vw,4.6rem)}
 .services .section-head{margin-bottom:clamp(1.3rem,3vw,2.1rem)}
 
-.services__list{max-width:980px;margin-inline:auto;border-top:3px solid var(--yellow);border-bottom:1px solid var(--line-2)}
+.services__list{max-width:980px;margin-inline:auto;border-top:3px solid var(--gold);border-bottom:1px solid var(--line-2)}
 /* Base (telemóvel): ícone e nome na mesma linha, descrição por baixo. */
 .svc{display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-areas:"ico name" ". desc";column-gap:.65rem;row-gap:.1rem;padding-block:.9rem}
 .svc + .svc{border-top:1px solid var(--line)}
@@ -267,8 +289,8 @@ body.menu-open{overflow:hidden}
 .ba__img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
 .ba__after{clip-path:inset(0 0 0 var(--pos,50%))}
 .ba__tag{position:absolute;top:10px;font-family:var(--font-head);font-weight:700;font-size:.74rem;letter-spacing:.05em;text-transform:uppercase;padding:.3em .7em;border-radius:6px;color:#fff;z-index:3}
-.ba__tag--a{left:10px;background:rgba(11,55,107,.85)}
-.ba__tag--b{right:10px;background:var(--yellow);color:var(--ink)}
+.ba__tag--a{left:10px;background:rgba(12,38,68,.85)}
+.ba__tag--b{right:10px;background:var(--gold);color:var(--ink)}
 .ba__handle{position:absolute;top:0;bottom:0;left:var(--pos,50%);width:3px;background:#fff;transform:translateX(-50%);z-index:2;box-shadow:0 0 0 1px rgba(0,0,0,.15)}
 .ba__grip{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:40px;height:40px;border-radius:50%;background:#fff;box-shadow:var(--shadow-sm);display:flex;align-items:center;justify-content:center;color:var(--blue);cursor:ew-resize}
 .ba__grip svg{width:22px;height:22px}
@@ -343,7 +365,7 @@ body.menu-open{overflow:hidden}
 /* O anel de foco vai para DENTRO (offset negativo): a faixa chega aos bordos do
    ecra e um anel por fora ficava cortado ao meio, so com as linhas de cima e de
    baixo visiveis. */
-.carrossel__faixa:focus-visible{outline:3px solid var(--yellow);outline-offset:-3px;border-radius:var(--radius)}
+.carrossel__faixa:focus-visible{outline:3px solid var(--gold);outline-offset:-3px;border-radius:var(--radius)}
 /* O corte dos 440px nao e um numero redondo: e o telemovel mais largo que
    existe em retrato (430px). Ate ai a peca ocupa quase o ecra; a partir dai
    comeca a encolher, senao aos 600px dava uma moldura de 500x667 — mais alta
@@ -414,7 +436,7 @@ body.menu-open{overflow:hidden}
   width:46px;height:46px;padding:0;border:0;border-radius:50%;
   align-items:center;justify-content:center;cursor:pointer;
   background:rgba(255,255,255,.95);color:var(--navy);
-  box-shadow:0 8px 22px -8px rgba(8,53,107,.6),0 0 0 1px rgba(8,53,107,.12);
+  box-shadow:0 8px 22px -8px rgba(12,38,68,.6),0 0 0 1px rgba(12,38,68,.12);
   transition:opacity var(--t),background var(--t),color var(--t);
 }
 @media (hover:hover){.carrossel__seta:not([hidden]){display:flex}}
@@ -464,7 +486,7 @@ body.menu-open{overflow:hidden}
   position:fixed;inset:0;z-index:200;/* acima do menu (130) e do banner (180) */
   display:flex;align-items:center;justify-content:center;
   padding:clamp(.8rem,3vw,2rem);
-  background:rgba(8,36,64,.94);
+  background:rgba(6,22,39,.94);
   opacity:0;visibility:hidden;transition:opacity var(--t),visibility var(--t);
 }
 .lightbox.is-open{opacity:1;visibility:visible}
@@ -480,12 +502,12 @@ body.menu-open{overflow:hidden}
 /* 52px de alvo. O fundo dos botoes e ESCURO e nao claro: eles ficam por cima da
    fotografia (num ecra largo o `contain` deixa-a chegar aos lados) e um branco a
    14% sobre uma cozinha branca dava um icone que praticamente desaparecia.
-   Branco sobre rgba(10,36,64,.82) por cima da fotografia mais clara possivel
+   Branco sobre rgba(6,22,39,.82) por cima da fotografia mais clara possivel
    (100% branca) = 8,98:1; sobre o veu escuro da propria lightbox, 16,1:1. */
 .lightbox__btn{
   position:absolute;z-index:2;width:52px;height:52px;padding:0;border:0;border-radius:50%;
   display:flex;align-items:center;justify-content:center;cursor:pointer;
-  background:rgba(10,36,64,.82);color:#fff;
+  background:rgba(6,22,39,.82);color:#fff;
   transition:background var(--t-fast),color var(--t-fast);
 }
 .lightbox__btn svg{width:26px;height:26px}
@@ -563,13 +585,13 @@ body.menu-open{overflow:hidden}
 
 /* ---------------- FOOTER ---------------- */
 .footer{position:relative;background:var(--grad-navy);color:#B9C7DA;padding-top:clamp(2.8rem,5vw,4.2rem)}
-.footer::before{content:"";position:absolute;top:0;left:0;right:0;height:5px;background:var(--yellow)}
+.footer::before{content:"";position:absolute;top:0;left:0;right:0;height:5px;background:var(--gold)}
 .footer__grid{display:grid;grid-template-columns:1.4fr 1fr 1.2fr;gap:2rem;padding-bottom:2.4rem}
 .footer__logo{height:auto;width:230px;max-width:70%}
 .footer__brand p{max-width:34ch;font-size:.95rem;margin-top:1rem}
 .footer__social{display:flex;gap:.6rem;margin-top:1.1rem}
 .footer__social a{width:44px;height:44px;border-radius:11px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;color:#fff;transition:background var(--t-fast),transform var(--t-fast)}
-.footer__social a:hover{background:var(--yellow);color:var(--navy);transform:translateY(-2px)}
+.footer__social a:hover{background:var(--gold);color:var(--navy);transform:translateY(-2px)}
 .footer__social svg{width:22px;height:22px}
 .footer__col h4{color:#fff;font-size:1.05rem;margin-bottom:.9rem;font-family:var(--font-head)}
 .footer__col ul{display:flex;flex-direction:column;list-style:none;padding:0;margin:0}
@@ -579,7 +601,7 @@ body.menu-open{overflow:hidden}
    .footer__col, e apanhada por engano desalinhava o telefone do seu icone. */
 nav.footer__col ul a{display:inline-flex;align-items:center;min-height:44px;min-width:44px}
 .footer__contact li{display:flex;gap:.6rem;align-items:flex-start;font-size:.95rem}
-.footer__contact .fic{flex:none;color:var(--yellow);margin-top:2px}
+.footer__contact .fic{flex:none;color:var(--gold);margin-top:2px}
 .footer__contact .fic svg{width:18px;height:18px}
 .footer__contact a{color:#B9C7DA;font-family:var(--font-head);font-weight:600}.footer__contact a:hover{color:#fff}
 .footer__contact .call-note{opacity:.7}
@@ -599,7 +621,7 @@ body.menu-open .cookie{display:none}
    banner — o main.js mede-a e escreve-a em --banner-h; o clamp e so o valor
    de recurso enquanto o JS nao correr. */
 body.tem-banner .footer__bar{padding-bottom:calc(1.3rem + var(--banner-h, clamp(9rem,55vw,16rem)))}
-.cookie__inner{max-width:var(--maxw);margin:0 auto 14px;background:#fff;color:var(--body);border:1px solid var(--line-2);border-left:4px solid var(--yellow);border-radius:var(--radius);box-shadow:var(--shadow);padding:1rem 1.2rem;display:flex;align-items:center;gap:1.2rem;flex-wrap:wrap}
+.cookie__inner{max-width:var(--maxw);margin:0 auto 14px;background:#fff;color:var(--body);border:1px solid var(--line-2);border-left:4px solid var(--gold);border-radius:var(--radius);box-shadow:var(--shadow);padding:1rem 1.2rem;display:flex;align-items:center;gap:1.2rem;flex-wrap:wrap}
 .cookie__inner p{font-size:.9rem;line-height:1.5;flex:1;min-width:240px}.cookie__inner strong{color:var(--ink)}.cookie__inner a{color:var(--blue);text-decoration:underline}
 .cookie__actions{display:flex;gap:.6rem;flex:none}
 .cookie__actions .btn--outline{border-color:var(--line-2);color:var(--ink)}
@@ -609,7 +631,7 @@ body.tem-banner .footer__bar{padding-bottom:calc(1.3rem + var(--banner-h, clamp(
 @media (max-width:520px){.cookie__actions{width:100%}.cookie__actions .btn{flex:1;padding-inline:.7em}}
 
 /* ---------------- PÁGINAS LEGAIS ---------------- */
-.legalhead{position:sticky;top:0;z-index:50;background:linear-gradient(160deg,#0B4A93,#0A2440);border-bottom:1px solid rgba(255,255,255,.1)}
+.legalhead{position:sticky;top:0;z-index:50;background:linear-gradient(160deg,#12314F,#061627);border-bottom:1px solid rgba(255,255,255,.1)}
 .legalhead .container{display:flex;align-items:center;justify-content:space-between;padding-block:10px;gap:1rem}
 .legalhead .nav__brand{display:inline-flex;align-items:center;gap:.6rem;min-width:0}
 .legalhead .nav__mark{height:42px;width:auto}

@@ -1,16 +1,36 @@
 /* =============================================================
    RAF MATOS — base.css
-   Design system: tokens (azul+amarelo do logo), tipografia, reset, primitivos.
+   Design system: tokens, tipografia, reset, primitivos.
+
+   PALETA — medida na arte nova do cliente, não escolhida a gosto
+   (_source/logo-novo/rafmatos_new_colors_and_logo.jpg):
+
+     fundo    #02142A a #0C2644  (tem vinheta; o valor limpo é o do centro)
+     dourado  #8D6625 a #FFE4AB  (é metálico, tem gama, não é uma cor só)
+
+   Duas notas que explicam porque há DOIS dourados:
+
+   1. Nenhum tom do metal serve como texto sobre marinho E sobre branco. O
+      dourado da marca (#D9A441) dá 6,8:1 sobre o marinho — ótimo — mas 2,3:1
+      sobre branco, que é ilegível. Para dourado sobre fundo claro usa-se
+      --gold-ink #8D6625, que é a sombra do próprio metal e dá 5,2:1.
+
+   2. O azul deixou de ser vivo. O logótipo antigo era amarelo sobre #1B4C82;
+      o novo é dourado sobre um marinho muito mais fundo. O --blue continua a
+      existir porque é a cor das ligações e dos ícones sobre fundo claro, onde
+      o dourado não tem contraste — mas foi aprofundado para acompanhar.
    ============================================================= */
 :root {
   /* ---- Marca ---- */
-  --blue:#0B57A4;        /* azul primário */
-  --blue-600:#094A8C;
-  --blue-050:#EAF2FB;
-  --navy:#08356B;        /* navy escuro (secções/footer) */
-  --navy-900:#0A2440;
-  --yellow:#F2B50A;      /* amarelo (acento / CTA) */
-  --yellow-600:#D99F00;
+  --blue:#1B4C82;        /* ligações e ícones sobre claro — 8,7:1 s/ branco */
+  --blue-600:#143C68;
+  --blue-050:#EDF2F9;
+  --navy:#0C2644;        /* o campo do logótipo */
+  --navy-900:#061627;    /* o tom da vinheta, para o fundo dos degradés */
+  --gold:#D9A441;        /* o dourado da marca — 6,8:1 sobre o marinho */
+  --gold-600:#C9922B;
+  --gold-ink:#8D6625;    /* dourado escuro, para texto dourado sobre claro */
+  --gold-soft:#F6D77A;   /* dourado claro, para texto miúdo sobre marinho */
   --wa:#25D366;
 
   /* ---- Neutros ---- */
@@ -20,13 +40,13 @@
   --bg-mut:#E9EEF5;
   --ink:#16233A;         /* títulos / texto forte */
   --body:#3B4757;        /* texto corrente */
-  --muted:#6C7789;       /* secundário */
+  --muted:#5E6875;       /* secundário. Era #6C7789 e chumbava o AA em dois sítios: 4,18:1 no fundo suave e 4,41:1 no fundo do mapa. Este dá 4,62:1 no pior deles. */
   --line:#E3E8F0;
   --line-2:#CFD7E3;
 
   /* ---- Gradientes ---- */
-  --grad-navy:linear-gradient(160deg,#0B4A93 0%,#08356B 55%,#0A2440 100%);
-  --grad-blue:linear-gradient(135deg,#1268BE 0%,#0B57A4 100%);
+  --grad-navy:linear-gradient(160deg,#12314F 0%,#0C2644 55%,#061627 100%);
+  --grad-blue:linear-gradient(135deg,#245C99 0%,#1B4C82 100%);
 
   /* ---- Tipografia ---- */
   --font-head:'Barlow', 'Segoe UI', system-ui, sans-serif;
@@ -38,9 +58,9 @@
   --radius-lg:20px;
   --radius-sm:8px;
   --radius-pill:999px;
-  --shadow-sm:0 2px 10px -4px rgba(11,55,107,.22);
-  --shadow:0 18px 44px -22px rgba(11,55,107,.40);
-  --shadow-yellow:0 12px 26px -12px rgba(217,159,0,.6);
+  --shadow-sm:0 2px 10px -4px rgba(12,38,68,.24);
+  --shadow:0 18px 44px -22px rgba(12,38,68,.44);
+  --shadow-gold:0 12px 26px -12px rgba(201,146,43,.55);
 
   /* ---- Movimento ---- */
   --t-fast:.16s ease;
@@ -67,8 +87,8 @@ a{color:inherit;text-decoration:none}
 button{font:inherit;color:inherit;cursor:pointer;background:none;border:none}
 input,textarea,select,button{font:inherit}
 ul[class],ol[class]{list-style:none;padding:0}
-:focus-visible{outline:3px solid var(--yellow);outline-offset:2px;border-radius:4px}
-::selection{background:var(--yellow);color:var(--ink)}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px;border-radius:4px}
+::selection{background:var(--gold);color:var(--ink)}
 
 /* ---------------- TIPOGRAFIA ---------------- */
 h1,h2,h3,h4{font-family:var(--font-head);font-weight:700;line-height:1.08;color:var(--ink);letter-spacing:-.01em}
@@ -78,7 +98,7 @@ h3{font-size:clamp(1.15rem, 2vw, 1.4rem)}
 p{text-wrap:pretty}
 strong{font-weight:700;color:var(--ink)}
 .text-blue{color:var(--blue)}
-.text-yellow{color:var(--yellow-600)}
+.text-yellow{color:var(--gold-600)}
 
 /* ---------------- LAYOUT ---------------- */
 .container{width:100%;max-width:var(--maxw);margin-inline:auto;padding-inline:var(--gutter)}
@@ -90,7 +110,7 @@ strong{font-weight:700;color:var(--ink)}
 .section-head{max-width:46rem;margin-bottom:clamp(1.8rem,4vw,3rem)}
 .section-head--center{margin-inline:auto;text-align:center}
 .eyebrow{display:inline-flex;align-items:center;gap:.55rem;font-family:var(--font-head);font-weight:700;font-size:.82rem;letter-spacing:.16em;text-transform:uppercase;color:var(--blue)}
-.eyebrow::before{content:"";width:26px;height:3px;border-radius:2px;background:var(--yellow)}
+.eyebrow::before{content:"";width:26px;height:3px;border-radius:2px;background:var(--gold)}
 .section-head--center .eyebrow::before{display:none}
 .section-title{margin-top:.55rem}
 .section-lead{margin-top:.9rem;font-size:var(--fs-lead);color:var(--muted)}
@@ -106,8 +126,8 @@ strong{font-weight:700;color:var(--ink)}
 .btn:hover{transform:translateY(-2px)}
 .btn:active{transform:translateY(0)}
 .btn svg{width:1.15em;height:1.15em;flex:none}
-.btn--primary{background:var(--yellow);color:var(--ink);box-shadow:var(--shadow-yellow)}
-.btn--primary:hover{background:var(--yellow-600)}
+.btn--primary{background:var(--gold);color:var(--ink);box-shadow:var(--shadow-gold)}
+.btn--primary:hover{background:var(--gold-600)}
 .btn--blue{background:var(--blue);color:#fff}
 .btn--blue:hover{background:var(--blue-600)}
 .btn--dark{background:var(--navy);color:#fff}
