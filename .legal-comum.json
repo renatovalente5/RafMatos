@@ -1,5 +1,5 @@
 {
-  "versao": "1.0.0",
+  "versao": "1.1.0",
   "instaladoEm": "2026-10-22",
   "origem": "_ferramentas/legal-comum",
   "modo": "fragmentos do CLI colados com marcadores <!-- legal-comum:… --> (sem cópia da biblioteca)",
