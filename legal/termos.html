@@ -12,7 +12,22 @@
   <link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png" />
   <link rel="stylesheet" href="../assets/css/fonts.css?v=be308d42" />
   <link rel="stylesheet" href="../assets/css/base.css?v=c4ff5a0f" />
-  <link rel="stylesheet" href="../assets/css/styles.css?v=b8f942b4" />
+  <link rel="stylesheet" href="../assets/css/styles.css?v=57ac4dad" />
+  <!-- legal-comum:livro-css v1.0.0 -->
+  <style>
+  .lr-botao{display:inline-flex;align-items:center;gap:.5em;min-height:44px;min-width:44px;padding:.5em 1em;border:1px solid transparent;border-radius:.5em;background:#af272f;color:#ffffff;font-family:inherit;font-size:max(14px,.95rem);font-weight:600;line-height:1.2;text-decoration:none;white-space:nowrap;cursor:pointer}
+  .lr-botao:hover,.lr-botao:focus-visible{text-decoration:underline;text-underline-offset:.15em}
+  .lr-botao:focus-visible{outline:3px solid currentColor;outline-offset:3px}
+  .lr-botao svg{width:1.5em;height:1.5em;flex:none}
+  .lr-botao--vermelho{background:#af272f;color:#ffffff;border-color:transparent}
+  .lr-botao--azul{background:#005a9c;color:#ffffff;border-color:transparent}
+  .lr-botao--preto{background:#111111;color:#ffffff;border-color:transparent}
+  .lr-botao--branco{background:#ffffff;color:#111111;border-color:#111111}
+  .lr-texto{font-weight:700;color:inherit;text-decoration:underline;text-underline-offset:.15em}
+  .lr-texto svg{width:1.2em;height:1.2em;vertical-align:-.2em;margin-right:.3em}
+  .lr-sr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+  </style>
+  <!-- /legal-comum:livro-css -->
 </head>
 <body>
   <header class="legalhead">
@@ -27,7 +42,7 @@
 
   <main class="legal">
     <h1>Termos e Condições</h1>
-    <p class="updated">Última atualização: julho de 2026</p>
+    <p class="updated">Última atualização: outubro de 2026</p>
 
     <h2>1. Identificação (DL n.º 7/2004 e art. 171.º do CSC)</h2>
     <ul>
@@ -50,31 +65,39 @@
     <p>Os conteúdos deste website (textos, logótipo, fotografias de obras e elementos gráficos) são propriedade da Raf Matos ou de terceiros que autorizaram a sua utilização, estando protegidos por direitos de autor. É proibida a sua reprodução sem autorização prévia.</p>
 
     <h2>5. Responsabilidade</h2>
-    <p>A Raf Matos procura manter a informação atualizada e correta, não se responsabilizando, porém, por eventuais imprecisões ou pela indisponibilidade temporária do site. As ligações para sites de terceiros (por exemplo, redes sociais ou o mapa do Google) regem-se pelas políticas desses terceiros.</p>
+    <p>A Raf Matos procura manter a informação atualizada e correta, não se responsabilizando, porém, na medida permitida por lei, por eventuais imprecisões ou pela indisponibilidade temporária do site. As ligações para sites de terceiros (por exemplo, redes sociais ou o mapa do Google) regem-se pelas políticas desses terceiros.</p>
 
     <h2>6. Livro de Reclamações</h2>
     <p>Nos termos da lei, dispomos de Livro de Reclamações. Pode apresentar uma reclamação através do Livro de Reclamações eletrónico, disponível em <a href="https://www.livroreclamacoes.pt/inicio" target="_blank" rel="noopener">www.livroreclamacoes.pt</a>.</p>
 
     <h2>7. Resolução Alternativa de Litígios (RAL)</h2>
-    <p>Em caso de litígio de consumo, o consumidor pode recorrer a uma entidade de Resolução Alternativa de Litígios. A entidade competente na área da sede da empresa (Vila Nova de Gaia) é:</p>
-    <ul>
-      <li><strong>CICAP — Centro de Informação de Consumo e Arbitragem do Porto</strong></li>
-      <li>Rua Damião de Góis, n.º 31, loja 6, 4050-225 Porto</li>
-      <li><a href="https://www.cicap.pt" target="_blank" rel="noopener">www.cicap.pt</a></li>
+    <!-- legal-comum:ral v1.0.0 -->
+    <div class="ral" lang="pt">
+    <p>Em caso de litígio de consumo, o consumidor pode recorrer a uma entidade de resolução alternativa de litígios de consumo. O centro competente é o do domicílio do consumidor ou do local da contratação; nos litígios de valor até 5 000 €, a arbitragem ou a mediação é obrigatória para o fornecedor se o consumidor a escolher (Lei n.º 24/96, art. 14.º, n.º 2; Lei n.º 144/2015, art. 18.º).</p>
+    <ul class="ral__lista">
+    <li><strong>CICAP</strong> — Centro de Informação de Consumo e Arbitragem do Porto (Área Metropolitana do Porto): <a href="https://cicap.pt/" target="_blank" rel="noopener">cicap.pt</a></li>
+    <li><strong>CNIACC</strong> — Centro Nacional de Informação e Arbitragem de Conflitos de Consumo (para quem resida fora da área do centro acima): <a href="https://www.cniacc.pt/" target="_blank" rel="noopener">cniacc.pt</a></li>
     </ul>
-    <p>Mais informações em <a href="https://www.consumidor.gov.pt" target="_blank" rel="noopener">www.consumidor.gov.pt</a>. Esta informação é prestada nos termos da Lei n.º 144/2015, de 8 de setembro.</p>
+    <p>A lista actualizada das entidades está no <a href="https://www.consumidor.gov.pt/resolucaoalternativalitigiosdeconsumo/centros-de-arbitragem2/encontrar-a-entidade-competente/lista-de-contactos" target="_blank" rel="noopener">Portal do Consumidor</a>.</p>
+    </div>
+    <!-- /legal-comum:ral -->
 
     <h2>8. Lei aplicável e foro</h2>
-    <p>Os presentes Termos regem-se pela lei portuguesa. Para a resolução de quaisquer litígios é competente o foro da comarca do Porto, sem prejuízo das regras imperativas de proteção do consumidor.</p>
+    <p>Os presentes Termos regem-se pela lei portuguesa. Para a resolução de quaisquer litígios é competente o foro da comarca do Porto, sem prejuízo do foro do consumidor e das demais regras imperativas de proteção do consumidor.</p>
 
     <h2>9. Contacto</h2>
-    <p>Para qualquer esclarecimento, contacte-nos através do telefone <a href="tel:+351937605547">937 605 547</a> ou por WhatsApp.</p>
+    <p>Para qualquer esclarecimento, contacte-nos através do telefone <a href="tel:+351937605547">937 605 547</a> (chamada para a rede móvel nacional) ou por WhatsApp.</p>
   </main>
 
   <footer class="legal__foot">
     <p>© <span data-year>2026</span> Raf Matos · Hipótesabraçada Unipessoal, Lda. · NIPC 518 737 152</p>
+    <p class="legal__livro">
+      <!-- legal-comum:livro v1.0.0 -->
+      <a class="lr-botao" href="https://www.livroreclamacoes.pt/inicio" target="_blank" rel="noopener" lang="pt"><svg class="lr-icone" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false" fill="currentColor"><path fill-rule="evenodd" d="M6 2h12a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Zm1 0v20h1.2V2H7Zm3.8 5.2h5.4a.8.8 0 0 1 0 1.6h-5.4a.8.8 0 0 1 0-1.6Zm0 4h5.4a.8.8 0 0 1 0 1.6h-5.4a.8.8 0 0 1 0-1.6Zm0 4h3.4a.8.8 0 0 1 0 1.6h-3.4a.8.8 0 0 1 0-1.6Z"/></svg><span class="lr-botao__texto">Livro de Reclamações</span><span class="lr-sr"> (abre numa nova janela)</span></a>
+      <!-- /legal-comum:livro -->
+    </p>
   </footer>
 
-  <script src="../assets/js/main.js?v=cb86dab4" defer></script>
+  <script src="../assets/js/main.js?v=6ae5edf5" defer></script>
 </body>
 </html>

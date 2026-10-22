@@ -1,0 +1,12 @@
+{
+  "versao": "1.0.0",
+  "instaladoEm": "2026-10-22",
+  "origem": "_ferramentas/legal-comum",
+  "modo": "fragmentos do CLI colados com marcadores <!-- legal-comum:… --> (sem cópia da biblioteca)",
+  "pecas": {
+    "livro": ["index.html", "legal/termos.html", "legal/privacidade.html", "legal/cookies.html"],
+    "livro-css": ["index.html", "legal/termos.html", "legal/privacidade.html", "legal/cookies.html"],
+    "ral": ["legal/termos.html"],
+    "privacidade": ["legal/privacidade.html"]
+  }
+}

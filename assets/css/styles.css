@@ -692,3 +692,14 @@ body.tem-banner .footer__bar{padding-bottom:calc(1.3rem + var(--banner-h, clamp(
 /* No computador a fonte e a cozinha panoramica (ver o <picture> no HTML):
    e larga e baixa, portanto o recorte vertical vai ao centro. */
 @media (min-width:881px){.hero__bg{object-position:50% 50%}}
+
+/* ---------- Grupo 1 da auditoria legal (out 2026) ---------- */
+/* Botão do Livro de Reclamações (legal-comum): não herda a cor das ligações do rodapé */
+.footer__links a.lr-botao,.footer__links a.lr-botao:hover{color:#fff}
+.contact__call-note{margin-top:.6rem}
+.contact__livro{margin-top:1.2rem}
+.legal__livro{margin-top:.9rem}
+/* Tabela dos destinatários na política de privacidade */
+.legal .table-scroll{overflow-x:auto;margin-bottom:.9rem}
+.legal .destinatarios{border-collapse:collapse;width:100%;font-size:.9rem}
+.legal .destinatarios th,.legal .destinatarios td{border:1px solid var(--line);padding:.5rem .6rem;text-align:left;vertical-align:top}
