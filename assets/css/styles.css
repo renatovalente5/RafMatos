@@ -696,7 +696,6 @@ body.tem-banner .footer__bar{padding-bottom:calc(1.3rem + var(--banner-h, clamp(
 /* ---------- Grupo 1 da auditoria legal (out 2026) ---------- */
 /* Livro de Reclamações (legal-comum, discreto): com a letra e a cor das outras ligações do rodapé */
 .contact__call-note{margin-top:.6rem}
-.contact__livro{margin-top:1.2rem}
 .legal__livro{margin-top:.9rem}
 /* Tabela dos destinatários na política de privacidade */
 .legal .table-scroll{overflow-x:auto;margin-bottom:.9rem}
